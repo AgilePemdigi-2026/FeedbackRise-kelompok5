@@ -379,6 +379,13 @@
                 height: 38px;
             }
         }
+        
+    /* Pesan error validasi */
+.error-message {
+    margin: 6px 0 0;
+    color: #d93025;
+    font-size: 11px;
+}
 
     </style>
 </head>
@@ -420,75 +427,77 @@
                 </p>
 
 
-                <form
-                    action="#"
-                    method="POST"
-                >
 
-                    @csrf
+<form
+    action="{{ route('login.process') }}"
+    method="POST"
+>
+    @csrf
+    @if ($errors->any())
+    <p style="color: red;">
+        {{ $errors->first() }}
+    </p>
+@endif
 
+    <!-- Email -->
+    <div class="field">
+        <label for="email">
+            Email
+        </label>
 
-                    <!-- Username -->
+        <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Enter Email"
+            autocomplete="email"
+            value="{{ old('email') }}"
+            required
+        >
 
-                    <div class="field">
+        @error('email')
+            <p class="error-message">{{ $message }}</p>
+        @enderror
+    </div>
 
-                        <label for="username">
-                            Username
-                        </label>
+    <!-- Password -->
+    <div class="field">
+        <div class="label-row">
+            <label for="password">
+                Password
+            </label>
 
-                        <input
-                            id="username"
-                            name="username"
-                            type="text"
-                            placeholder="Enter Username"
-                            autocomplete="username"
-                            required
-                        >
+            <a
+                href="{{ url('/forgot-password') }}"
+                class="forgot-link"
+            >
+                Forgot Password?
+            </a>
+        </div>
 
-                    </div>
+        <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Enter Password"
+            autocomplete="current-password"
+            required
+        >
 
+        @error('password')
+            <p class="error-message">{{ $message }}</p>
+        @enderror
+    </div>
 
-                    <!-- Password -->
+    <!-- Tombol Sign In -->
+    <button
+        class="submit"
+        type="submit"
+    >
+        Sign In
+    </button>
+</form>
 
-                    <div class="field">
-
-                        <div class="label-row">
-
-                            <label for="password">
-                                Password
-                            </label>
-
-                            <a
-                                href="{{ url('/forgot-password') }}"
-                                class="forgot-link"
-                            >
-                                Forgot Password?
-                            </a>
-
-                        </div>
-
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            placeholder="Enter Password"
-                            autocomplete="current-password"
-                            required
-                        >
-
-                    </div>
-
-
-                    <!-- Tombol Sign In -->
-
-                    <button
-                        class="submit"
-                        type="submit"
-                    >
-                        Sign In
-                    </button>
-
-                </form>
 
 
                 <!-- Sign Up -->
@@ -497,7 +506,7 @@
 
                     Don't have an account?
 
-                    <a href="#">
+                    <a href="{{ route('register') }}">
                         Sign Up
                     </a>
 

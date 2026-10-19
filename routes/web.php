@@ -1,15 +1,24 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::get('/login', function () {
-    return view('auth.login');
+    return redirect()->route('login');
 });
 
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
-})->name('password.request');
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.process');
+
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register');
+
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.process');
+
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
