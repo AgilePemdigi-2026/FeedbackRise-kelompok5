@@ -85,13 +85,7 @@
             </div>
         </section>
     </main>
-    <script>
-        document.getElementById('forgotForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            if (!this.reportValidity()) return;
-            document.getElementById('success').classList.add('show');
-        });
-    </script>
+  <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
 

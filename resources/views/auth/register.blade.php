@@ -144,25 +144,23 @@
                 <h1>Create an account</h1>
                 <p class="subtitle">Create your account to access your analytics dashboard.</p>
 
-                <form method="POST" action="{{ url('/register') }}" novalidate>
-                    @csrf
+                <form id="register-form" novalidate>
 
                     <div class="field">
                         <label for="email">Email</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email" autocomplete="email" required>
-                        @error('email') <p class="error">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="field">
                         <label for="username">Username</label>
                         <input id="username" type="text" name="username" value="{{ old('username') }}" placeholder="Enter Username" autocomplete="username" required>
-                        @error('username') <p class="error">{{ $message }}</p> @enderror
+                        
                     </div>
 
                     <div class="field">
                         <label for="password">Password</label>
                         <input id="password" type="password" name="password" placeholder="Enter Password" autocomplete="new-password" required>
-                        @error('password') <p class="error">{{ $message }}</p> @enderror
+                        
                     </div>
 
                     <div class="field">
@@ -170,7 +168,11 @@
                         <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Enter Password" autocomplete="new-password" required>
                     </div>
 
-                    <button type="submit" class="btn">Sign Up</button>
+                    <p id="register-error" class="error" role="alert" hidden></p>
+                    <p id="register-success" class="error" role="status" hidden></p>
+                    <button type="submit" class="btn" id="register-button">
+    Sign Up
+</button>
                 </form>
 
                 <p class="switch">Already have an account? <a href="{{ url('/login') }}">Login Here</a></p>
@@ -178,5 +180,6 @@
         </main>
 
     </div>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

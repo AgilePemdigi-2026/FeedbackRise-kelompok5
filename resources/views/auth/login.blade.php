@@ -428,49 +428,26 @@
 
 
 
-<form
-    action="{{ route('login.process') }}"
-    method="POST"
->
-    @csrf
-    @if ($errors->any())
-    <p style="color: red;">
-        {{ $errors->first() }}
-    </p>
-@endif
 
-    <!-- Email -->
+<form id="login-form">
+    <p id="login-error" class="error-message" role="alert" hidden></p>
+
     <div class="field">
-        <label for="email">
-            Email
-        </label>
-
+        <label for="email">Email</label>
         <input
             id="email"
             name="email"
             type="email"
             placeholder="Enter Email"
             autocomplete="email"
-            value="{{ old('email') }}"
             required
         >
-
-        @error('email')
-            <p class="error-message">{{ $message }}</p>
-        @enderror
     </div>
 
-    <!-- Password -->
     <div class="field">
         <div class="label-row">
-            <label for="password">
-                Password
-            </label>
-
-            <a
-                href="{{ url('/forgot-password') }}"
-                class="forgot-link"
-            >
+            <label for="password">Password</label>
+            <a href="{{ url('/forgot-password') }}" class="forgot-link">
                 Forgot Password?
             </a>
         </div>
@@ -483,20 +460,13 @@
             autocomplete="current-password"
             required
         >
-
-        @error('password')
-            <p class="error-message">{{ $message }}</p>
-        @enderror
     </div>
 
-    <!-- Tombol Sign In -->
-    <button
-        class="submit"
-        type="submit"
-    >
+    <button class="submit" type="submit" id="login-button">
         Sign In
     </button>
 </form>
+
 
 
 
