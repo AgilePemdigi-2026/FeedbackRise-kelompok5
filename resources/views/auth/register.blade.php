@@ -9,33 +9,54 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
+
         * { box-sizing: border-box; }
-        html, body { margin: 0; min-height: 100%; }
+
+        html,
         body {
-            font-family: 'Inter', Arial, sans-serif;
-            color: #000;
-            background: #fff;
+            width: 100%;
+            height: 100%;
+            margin: 0;
         }
 
-        .page {
+        body {
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f6f6f6;
+            color: #111;
+            font-family: 'Nunito Sans', Arial, sans-serif;
+        }
+
+        /* Halaman utama */
+        .page {
+            width: 100%;
+            height: 100vh;
             display: grid;
             grid-template-columns: 46% 54%;
-            padding: 0;
-            gap: 0;
+            background: #fff;
+            overflow: hidden;
         }
 
-        /* Panel kiri (gambar) */
+        /* Panel gambar */
         .art-panel {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: flex-end;
             padding: 24px 0 24px 24px;
             overflow: hidden;
         }
+
         .brand-art {
             display: block;
             width: auto;
@@ -44,93 +65,184 @@
             object-fit: contain;
         }
 
-        /* Panel kanan */
+        /* Panel form */
         .form-panel {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 24px;
-        }
-        .form-wrap { width: 100%; max-width: 472px; }
-        .form-wrap h1 {
-            margin: 0 0 14px;
-            font-size: 44px;
-            line-height: 1.1;
-            font-weight: 600;
-            letter-spacing: -1px;
-        }
-        .subtitle {
-            margin: 0 0 30px;
-            font-size: 18px;
-            line-height: 1.35;
+            justify-content: flex-start;
+            padding: 40px 6% 40px 5%;
         }
 
-        .field { margin-bottom: 18px; }
-        .field label {
+        .form {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        /* Judul */
+        h1 {
+            margin: 0 0 10px;
+            font-size: clamp(32px, 3vw, 44px);
+            line-height: 1.15;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+        }
+
+        .subtitle {
+            margin: 0 0 32px;
+            color: #555;
+            font-size: clamp(14px, 1.15vw, 17px);
+            line-height: 1.5;
+        }
+
+        /* Field */
+        .field { margin: 0 0 18px; }
+
+        label {
             display: block;
             margin-bottom: 8px;
-            font-size: 17px;
-            font-weight: 500;
+            font-size: clamp(12px, 0.9vw, 14px);
+            line-height: 1.2;
+            font-weight: 800;
         }
-        .field input {
+
+        /* Input */
+        input {
             width: 100%;
-            height: 56px;
-            padding: 0 26px;
-            border: 2px solid transparent;
-            border-radius: 28px;
-            background: #E0E0E0;
-            font-family: inherit;
-            font-size: 15px;
-            color: #000;
+            height: 48px;
+            padding: 0 18px;
+            border: 0;
+            border-radius: 24px;
             outline: none;
-            transition: border-color .15s, background .15s;
+            background: #e5e5e5;
+            color: #222;
+            font: 600 13px 'Nunito Sans', Arial, sans-serif;
         }
-        .field input::placeholder { color: #8a8a8a; }
-        .field input:focus { background: #fff; border-color: #234FC1; }
-        .field .error {
-            margin: 6px 0 0 8px;
+
+        input::placeholder { color: #858585; }
+
+        input:focus { box-shadow: 0 0 0 2px #2854c5; }
+
+        /* Pesan error dan sukses (diisi oleh JS) */
+        .error,
+        .success {
+            margin: 0 0 12px 4px;
             font-size: 13px;
-            color: #c0392b;
+            line-height: 1.4;
         }
 
-        .btn {
+        .error { color: #d93025; }
+        .success { color: #1e8e3e; }
+
+        /* Tombol Sign Up */
+        .submit {
             width: 100%;
-            height: 56px;
-            margin-top: 24px;
-            border: 1px solid #1d3f9e;
-            border-radius: 28px;
-            background: #234FC1;
+            height: 48px;
+            margin-top: 10px;
+            border: 0;
+            border-radius: 24px;
+            background: #4054c6;
             color: #fff;
-            font-family: inherit;
-            font-size: 18px;
-            font-weight: 600;
+            font: 800 14px 'Nunito Sans', Arial, sans-serif;
             cursor: pointer;
-            transition: background .15s;
         }
-        .btn:hover { background: #1d43a6; }
-        .btn:focus-visible { outline: 3px solid #FFD55C; outline-offset: 2px; }
 
-        .switch {
-            margin-top: 22px;
+        .submit:hover { background: #3347b5; }
+
+        .submit:disabled {
+            opacity: .7;
+            cursor: not-allowed;
+        }
+
+        /* Link ke login */
+        .signup {
+            margin: 22px 0 0;
             text-align: center;
-            font-size: 14px;
+            color: #666;
+            font-size: 11px;
         }
-        .switch a { color: #3a5bd9; text-decoration: none; }
-        .switch a:hover { text-decoration: underline; }
 
-        /* Responsif */
-        @media (max-width: 900px) {
-            .page { grid-template-columns: 1fr; }
-            .art-panel { justify-content: center; padding: 20px; }
-            .brand-art { width: 100%; height: auto; max-width: 500px; }
-            .form-panel { padding: 32px 20px; }
-            .form-wrap h1 { font-size: 36px; }
+        .signup a {
+            color: #2854c5;
+            font-weight: 800;
+            text-decoration: none;
         }
+
+        .signup a:hover { text-decoration: underline; }
+
+        /* Laptop kecil */
+        @media (max-width: 1200px) {
+            .page { grid-template-columns: 45% 55%; }
+            .art-panel { padding-left: 20px; }
+            .form-panel { padding-left: 4%; padding-right: 6%; }
+            .form { max-width: 400px; }
+        }
+
+        /* Laptop dengan tinggi layar lebih kecil */
+        @media (max-height: 750px) and (min-width: 701px) {
+            .art-panel { padding-top: 18px; padding-bottom: 18px; }
+            .brand-art { height: calc(100vh - 36px); }
+            .form-panel { padding-top: 25px; padding-bottom: 25px; }
+            h1 { font-size: 34px; }
+            .subtitle { margin-bottom: 22px; font-size: 15px; }
+            .field { margin-bottom: 12px; }
+            input { height: 42px; }
+            .submit { height: 42px; }
+        }
+
+        /* Tablet */
+        @media (max-width: 700px) {
+            body { min-height: 100vh; }
+
+            .page {
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .art-panel {
+                height: auto;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .brand-art {
+                width: 100%;
+                height: auto;
+                max-width: 500px;
+            }
+
+            .form-panel {
+                height: auto;
+                justify-content: center;
+                padding: 40px 30px 50px;
+            }
+
+            .form { max-width: 440px; }
+        }
+
+        /* Handphone */
+        @media (max-width: 500px) {
+            .art-panel { padding: 15px; }
+            .form-panel { padding: 35px 22px 40px; }
+            .form { max-width: 100%; }
+            h1 { font-size: 30px; }
+            .subtitle { font-size: 14px; margin-bottom: 26px; }
+            input,
+            .submit { height: 44px; }
+        }
+
     </style>
 </head>
-<body>
-    <div class="page">
 
+<body>
+
+    <main class="page">
+
+        <!-- Gambar FeedbackRise -->
         <section class="art-panel" aria-label="FeedbackRise">
             <img
                 class="brand-art"
@@ -139,47 +251,94 @@
             >
         </section>
 
-        <main class="form-panel">
-            <div class="form-wrap">
-                <h1>Create an account</h1>
-                <p class="subtitle">Create your account to access your analytics dashboard.</p>
+        <!-- Form Register -->
+        <section class="form-panel">
 
+            <div class="form">
+
+                <h1>Create an account</h1>
+
+                <p class="subtitle">
+                    Create your account to access
+                    your analytics dashboard.
+                </p>
+
+                <!-- id="register-form" WAJIB, dipakai register.js -->
                 <form id="register-form" novalidate>
 
                     <div class="field">
                         <label for="email">Email</label>
-                        <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="Enter Email" autocomplete="email" required>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="Enter Email"
+                            autocomplete="email"
+                            value="{{ old('email') }}"
+                            required
+                        >
                     </div>
 
                     <div class="field">
                         <label for="username">Username</label>
-                        <input id="username" type="text" name="username" value="{{ old('username') }}" placeholder="Enter Username" autocomplete="username" required>
-                        
+                        <input
+                            id="username"
+                            name="username"
+                            type="text"
+                            placeholder="Enter Username"
+                            autocomplete="username"
+                            value="{{ old('username') }}"
+                            required
+                        >
                     </div>
 
                     <div class="field">
                         <label for="password">Password</label>
-                        <input id="password" type="password" name="password" placeholder="Enter Password" autocomplete="new-password" required>
-                        
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Enter Password"
+                            autocomplete="new-password"
+                            required
+                        >
                     </div>
 
                     <div class="field">
                         <label for="password_confirmation">Confirm Password</label>
-                        <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Enter Password" autocomplete="new-password" required>
+                        <input
+                            id="password_confirmation"
+                            name="password_confirmation"
+                            type="password"
+                            placeholder="Enter Password"
+                            autocomplete="new-password"
+                            required
+                        >
                     </div>
 
+                    <!-- Elemen pesan WAJIB, dipakai register.js -->
                     <p id="register-error" class="error" role="alert" hidden></p>
-                    <p id="register-success" class="error" role="status" hidden></p>
-                    <button type="submit" class="btn" id="register-button">
-    Sign Up
-</button>
+                    <p id="register-success" class="success" role="status" hidden></p>
+
+                    <!-- id="register-button" WAJIB, dipakai register.js -->
+                    <button type="submit" class="submit" id="register-button">
+                        Sign Up
+                    </button>
                 </form>
 
-                <p class="switch">Already have an account? <a href="{{ url('/login') }}">Login Here</a></p>
-            </div>
-        </main>
+                <p class="signup">
+                    Already have an account?
+                    <a href="{{ url('/login') }}">Login Here</a>
+                </p>
 
-    </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- WAJIB: memuat JS hasil compile Mix (Firebase) -->
     <script src="{{ mix('js/app.js') }}"></script>
+
 </body>
 </html>
