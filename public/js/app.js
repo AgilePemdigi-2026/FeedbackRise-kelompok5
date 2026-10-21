@@ -48328,7 +48328,7 @@ if (loginForm) {
             _context.n = 2;
             return (0,firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithEmailAndPassword)(_firebase__WEBPACK_IMPORTED_MODULE_1__.auth, email, password);
           case 2:
-            window.location.href = "/";
+            window.location.href = "/input-issue";
             _context.n = 4;
             break;
           case 3:

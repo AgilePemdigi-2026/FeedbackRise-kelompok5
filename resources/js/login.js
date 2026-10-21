@@ -19,7 +19,7 @@ if (loginForm) {
         try {
             await signInWithEmailAndPassword(auth, email, password);
 
-            window.location.href = "/";
+            window.location.href = "/input-issue";
         } catch (error) {
             errorElement.textContent =
                 error.code === "auth/invalid-credential"
