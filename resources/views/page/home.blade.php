@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>FeedbackRise - Input Issue</title>
+    <title>FeedbackRise - Home</title>
 
-    <link rel="stylesheet" href="{{ asset('css/page/input-issue.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('css/page/home.css') }}?v={{ time() }}">
 </head>
 
 <body>
@@ -189,7 +189,7 @@
 
     </div>
 
-    <script src="{{ asset('js/page/input-issue.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/page/home.js') }}?v={{ time() }}"></script>
 
 </body>
 </html>

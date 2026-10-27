@@ -1,4 +1,7 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+    signInWithEmailAndPassword
+} from "firebase/auth";
+
 import { auth } from "./firebase";
 
 const loginForm = document.getElementById("login-form");
@@ -17,16 +20,45 @@ if (loginForm) {
         button.textContent = "Signing in...";
 
         try {
+            // Simulasi system error untuk Scenario 6
+            if (window.__simulateLoginSystemError) {
+                throw new Error("SIMULATED_SYSTEM_ERROR");
+            }
+
+            // Langsung login menggunakan Firebase Authentication
             await signInWithEmailAndPassword(auth, email, password);
 
-            window.location.href = "/input-issue";
+            // Login berhasil
+            window.location.href = "/home";
+
         } catch (error) {
-            errorElement.textContent =
+            // System error
+            if (error.message === "SIMULATED_SYSTEM_ERROR") {
+                errorElement.textContent =
+                    "Login gagal. Periksa koneksi dan data akun kamu.";
+
+                errorElement.hidden = false;
+                return;
+            }
+
+            // Akun tidak terdaftar
+            if (
+                error.code === "auth/user-not-found" ||
                 error.code === "auth/invalid-credential"
-                    ? "Email atau password tidak sesuai."
-                    : "Login gagal. Periksa koneksi dan data akun kamu.";
+            ) {
+                errorElement.textContent =
+                    "Email atau password tidak sesuai.";
+
+                errorElement.hidden = false;
+                return;
+            }
+
+            // Password salah / credential tidak valid
+            errorElement.textContent =
+                "Email atau password tidak sesuai.";
 
             errorElement.hidden = false;
+
         } finally {
             button.disabled = false;
             button.textContent = "Sign In";

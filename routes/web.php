@@ -17,6 +17,6 @@ Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
 });
 
-Route::get('/input-issue', function () {
-    return view('page.input-issue');
-})->name('input.issue');
+Route::get('/home', function () {
+    return view('page.home');
+})->name('home');

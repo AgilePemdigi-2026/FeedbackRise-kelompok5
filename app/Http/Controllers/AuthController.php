@@ -16,22 +16,32 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-{
-    $credentials = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required', 'string'],
-    ]);
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+        ]);
 
-    if (Auth::attempt($credentials, $request->boolean('remember'))) {
-        $request->session()->regenerate();
+        // Login berhasil
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
 
-        return redirect()->intended('/');
+            return redirect()->route('home');
+        }
+
+        // Cek apakah email sudah terdaftar
+        $userExists = User::where('email', $request->email)->exists();
+
+        // Jika email belum terdaftar, arahkan ke halaman register
+        if (!$userExists) {
+            return redirect()->route('register');
+        }
+
+        // Jika email terdaftar tetapi password salah
+        throw ValidationException::withMessages([
+            'email' => 'Email atau password tidak sesuai.',
+        ]);
     }
-
-    throw ValidationException::withMessages([
-        'email' => 'Email atau password tidak sesuai.',
-    ]);
-}
 
     public function showRegister()
     {
@@ -53,9 +63,10 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+
         $request->session()->regenerate();
 
-        return redirect()->intended('/');
+        return redirect()->route('home');
     }
 
     public function logout(Request $request)

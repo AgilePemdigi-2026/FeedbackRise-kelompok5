@@ -48312,7 +48312,7 @@ var loginForm = document.getElementById("login-form");
 if (loginForm) {
   loginForm.addEventListener("submit", /*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(event) {
-      var email, password, errorElement, button, _t;
+      var email, password, errorElement, button, signInMethods, _t;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.p = _context.n) {
           case 0:
@@ -48325,26 +48325,56 @@ if (loginForm) {
             button.disabled = true;
             button.textContent = "Signing in...";
             _context.p = 1;
-            _context.n = 2;
-            return (0,firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithEmailAndPassword)(_firebase__WEBPACK_IMPORTED_MODULE_1__.auth, email, password);
+            if (!window.__simulateLoginSystemError) {
+              _context.n = 2;
+              break;
+            }
+            throw new Error("SIMULATED_SYSTEM_ERROR");
           case 2:
-            window.location.href = "/input-issue";
-            _context.n = 4;
-            break;
+            _context.n = 3;
+            return (0,firebase_auth__WEBPACK_IMPORTED_MODULE_0__.fetchSignInMethodsForEmail)(_firebase__WEBPACK_IMPORTED_MODULE_1__.auth, email);
           case 3:
-            _context.p = 3;
-            _t = _context.v;
-            errorElement.textContent = _t.code === "auth/invalid-credential" ? "Email atau password tidak sesuai." : "Login gagal. Periksa koneksi dan data akun kamu.";
+            signInMethods = _context.v;
+            if (!(signInMethods.length === 0)) {
+              _context.n = 4;
+              break;
+            }
+            errorElement.textContent = "Akun belum terdaftar. Silakan melakukan registrasi.";
             errorElement.hidden = false;
+            setTimeout(function () {
+              window.location.href = "/register";
+            }, 500);
+            return _context.a(2);
           case 4:
-            _context.p = 4;
+            _context.n = 5;
+            return (0,firebase_auth__WEBPACK_IMPORTED_MODULE_0__.signInWithEmailAndPassword)(_firebase__WEBPACK_IMPORTED_MODULE_1__.auth, email, password);
+          case 5:
+            window.location.href = "/home";
+            _context.n = 8;
+            break;
+          case 6:
+            _context.p = 6;
+            _t = _context.v;
+            if (!(_t.message === "SIMULATED_SYSTEM_ERROR")) {
+              _context.n = 7;
+              break;
+            }
+            errorElement.textContent = "Login gagal. Periksa koneksi dan data akun kamu.";
+            errorElement.hidden = false;
+            return _context.a(2);
+          case 7:
+            // Pesan untuk password/email yang salah
+            errorElement.textContent = "Email atau password tidak sesuai.";
+            errorElement.hidden = false;
+          case 8:
+            _context.p = 8;
             button.disabled = false;
             button.textContent = "Sign In";
-            return _context.f(4);
-          case 5:
+            return _context.f(8);
+          case 9:
             return _context.a(2);
         }
-      }, _callee, null, [[1, 3, 4, 5]]);
+      }, _callee, null, [[1, 6, 8, 9]]);
     }));
     return function (_x) {
       return _ref.apply(this, arguments);
@@ -67823,10 +67853,10 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 /***/ }),
 
-/***/ "./resources/css/page/input-issue.css":
-/*!********************************************!*\
-  !*** ./resources/css/page/input-issue.css ***!
-  \********************************************/
+/***/ "./resources/css/page/home.css":
+/*!*************************************!*\
+  !*** ./resources/css/page/home.css ***!
+  \*************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -80811,7 +80841,7 @@ function __rewriteRelativeImportExtension(path, preserveJsx) {
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
 /******/ 			"/js/app": 0,
-/******/ 			"css/input-issue": 0
+/******/ 			"css/home": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -80861,8 +80891,8 @@ function __rewriteRelativeImportExtension(path, preserveJsx) {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["css/input-issue"], () => (__webpack_require__("./resources/js/app.js")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/input-issue"], () => (__webpack_require__("./resources/css/page/input-issue.css")))
+/******/ 	__webpack_require__.O(undefined, ["css/home"], () => (__webpack_require__("./resources/js/app.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/home"], () => (__webpack_require__("./resources/css/page/home.css")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
