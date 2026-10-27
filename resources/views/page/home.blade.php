@@ -6,7 +6,7 @@
 
     <title>FeedbackRise - Home</title>
 
-    <<link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ time() }}">
 </head>
 
 <body>
@@ -125,8 +125,10 @@
 
         </header>
 
+
         <main>
 
+            <!-- Hero Section -->
             <section class="hero">
 
                 <h1>
@@ -185,9 +187,59 @@
 
             </section>
 
+
+            <!-- FeedbackRise Introduction Section -->
+            <section class="feedbackrise-intro">
+
+                <!-- Center Heading -->
+                <div class="feedbackrise-intro-heading">
+
+                    <h2>
+                        Understand what your customers need
+                        <span>Improve what matters</span>
+                    </h2>
+
+                </div>
+
+
+                <!-- Content -->
+                <div class="feedbackrise-intro-content">
+
+                    <!-- Text -->
+                    <div class="feedbackrise-intro-text">
+
+                        <h1>
+                            FEEDBACKRISE
+                        </h1>
+
+                        <p>
+                            FEEDBACKRISE is a platform where customer feedback is
+                            analyzed, categorized by common issues, prioritized based
+                            on importance and transformed into actionable
+                            recommendations for product improvement.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Illustration -->
+                    <div class="feedbackrise-intro-image">
+
+                        <img
+                            src="{{ asset('images/icons-orang.png') }}"
+                            alt="FeedbackRise Illustration"
+                        >
+
+                    </div>
+
+                </div>
+
+            </section>
+
         </main>
 
     </div>
+
 
     <script src="{{ asset('js/page/home.js') }}?v={{ time() }}"></script>
 

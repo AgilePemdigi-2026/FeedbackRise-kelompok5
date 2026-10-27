@@ -38,14 +38,13 @@ a {
     overflow-x: hidden;
 }
 
+
 /* Navbar */
 
 .navbar {
     position: relative;
-
     width: 100%;
     height: 115px;
-
     padding: 0 40px;
 
     display: flex;
@@ -53,9 +52,9 @@ a {
     justify-content: space-between;
 
     background: #ffffff;
-
     z-index: 20;
 }
+
 
 /* Brand */
 
@@ -63,48 +62,38 @@ a {
     display: flex;
     align-items: center;
     gap: 12px;
-
     flex-shrink: 0;
 }
 
 .logo {
     width: 38px;
     height: 42px;
-
     display: block;
-
     -o-object-fit: contain;
-
        object-fit: contain;
 }
 
 .brand-name {
     font-family: Arial, Helvetica, sans-serif;
-
     font-size: 20px;
     font-weight: 800;
-
     letter-spacing: -0.7px;
     line-height: 1;
-
     color: #000000;
-
     white-space: nowrap;
 }
+
 
 /* Navigation */
 
 .navigation {
     position: absolute;
-
     left: 50%;
     top: 32px;
-
     transform: translateX(-50%);
 
     display: flex;
     align-items: center;
-
     gap: 32px;
 }
 
@@ -116,7 +105,6 @@ a {
     height: 34px;
 
     color: #111111;
-
     font-size: 14px;
     font-weight: 400;
 
@@ -125,28 +113,24 @@ a {
 
 .nav-link.active {
     min-width: 80px;
-
     padding: 0 17px;
 
     background: #9bb1f3;
-
     border-radius: 20px;
 }
+
 
 /* Profile */
 
 .profile-container {
     position: relative;
-
     margin-left: auto;
-
     flex-shrink: 0;
 }
 
 .profile-button {
     width: 30px;
     height: 30px;
-
     padding: 0;
 
     display: flex;
@@ -154,7 +138,6 @@ a {
     justify-content: center;
 
     color: #111111;
-
     background: transparent;
 
     cursor: pointer;
@@ -165,29 +148,25 @@ a {
     height: 27px;
 }
 
+
 /* Profile Dropdown */
 
 .profile-menu {
     position: absolute;
-
     top: 37px;
     right: 0;
 
     width: 125px;
-
     padding: 6px;
 
     background: #ffffff;
-
     border: 1px solid #e5e5e5;
-
     border-radius: 9px;
 
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
 
     opacity: 0;
     visibility: hidden;
-
     transform: translateY(-5px);
 
     transition:
@@ -201,24 +180,19 @@ a {
 .profile-menu.show {
     opacity: 1;
     visibility: visible;
-
     transform: translateY(0);
 }
 
 .profile-menu button {
     width: 100%;
-
     padding: 8px;
 
     display: flex;
     align-items: center;
-
     gap: 8px;
 
     color: #111111;
-
     background: transparent;
-
     border-radius: 6px;
 
     font-size: 13px;
@@ -228,13 +202,13 @@ a {
     background: #f4f4f4;
 }
 
+
 /* Hero */
 
 .hero {
     position: relative;
 
     width: 100%;
-
     min-height: 350px;
 
     padding-top: 35px;
@@ -247,6 +221,7 @@ a {
 
     z-index: 5;
 }
+
 
 /* Yellow Background */
 
@@ -283,7 +258,8 @@ a {
     );
 }
 
-/* Heading */
+
+/* Hero Heading */
 
 .hero h1 {
     position: relative;
@@ -297,13 +273,13 @@ a {
 
     font-size: 42px;
     line-height: 1.15;
-
     font-weight: 400;
 
     text-align: center;
 
     z-index: 2;
 }
+
 
 /* Input Form */
 
@@ -323,11 +299,11 @@ a {
     background: #f8dddd;
 
     border-radius: 32px;
-
     overflow: hidden;
 
     z-index: 10;
 }
+
 
 /* Input */
 
@@ -343,7 +319,6 @@ a {
     outline: none;
 
     background: transparent;
-
     color: #333333;
 
     font-size: 14px;
@@ -359,6 +334,7 @@ a {
     opacity: 1;
 }
 
+
 /* Submit Button */
 
 .submit-button {
@@ -366,7 +342,6 @@ a {
     height: 50px;
 
     margin-right: 5px;
-
     padding: 0;
 
     display: flex;
@@ -392,6 +367,124 @@ a {
     width: 26px;
     height: 26px;
 }
+
+
+/* FeedbackRise Introduction */
+
+.feedbackrise-intro {
+    width: 100%;
+    min-height: 500px;
+
+    padding: 55px 40px 70px;
+
+    background: #ffffff;
+}
+
+.feedbackrise-intro-content {
+    position: relative;
+
+    width: 100%;
+    max-width: 1100px;
+
+    min-height: 390px;
+
+    margin: 0 auto;
+}
+
+
+/* FeedbackRise Heading */
+
+.feedbackrise-intro-text {
+    width: 100%;
+}
+
+.feedbackrise-intro-text h2 {
+    width: 100%;
+
+    margin: 0 0 78px;
+    padding: 0;
+
+    text-align: center;
+
+    font-size: 30px;
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    color: #000000;
+}
+
+.feedbackrise-intro-text h2 span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #4055c7;
+}
+
+
+/* FeedbackRise Description Area */
+
+.feedbackrise-intro-text h1 {
+    width: 52%;
+
+    margin: 0 0 12px;
+    padding: 0;
+
+    font-size: 34px;
+    line-height: 1.2;
+
+    font-weight: 400;
+
+    letter-spacing: 0;
+
+    color: #ed4d3d;
+}
+
+.feedbackrise-intro-text p {
+    width: 52%;
+    max-width: 560px;
+
+    margin: 0;
+    padding: 0;
+
+    font-size: 13px;
+    line-height: 1.7;
+
+    font-weight: 400;
+
+    color: #222222;
+}
+
+
+/* Illustration */
+
+.feedbackrise-intro-image {
+    position: absolute;
+
+    top: 155px;
+    right: 20px;
+
+    width: 320px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feedbackrise-intro-image img {
+    width: 100%;
+    max-width: 320px;
+
+    height: auto;
+
+    display: block;
+
+    -o-object-fit: contain;
+
+       object-fit: contain;
+}
+
 
 /* Tablet */
 
@@ -432,9 +525,7 @@ a {
     .issue-form {
         width: 70%;
         max-width: none;
-
         height: 55px;
-
         margin-top: 28px;
     }
 
@@ -442,7 +533,47 @@ a {
         width: 46px;
         height: 46px;
     }
+
+
+    /* FeedbackRise */
+
+    .feedbackrise-intro {
+        min-height: 450px;
+        padding: 50px 30px 60px;
+    }
+
+    .feedbackrise-intro-content {
+        max-width: 720px;
+        min-height: 350px;
+    }
+
+    .feedbackrise-intro-text h2 {
+        margin-bottom: 65px;
+        font-size: 26px;
+    }
+
+    .feedbackrise-intro-text h1 {
+        width: 52%;
+        font-size: 29px;
+    }
+
+    .feedbackrise-intro-text p {
+        width: 52%;
+        max-width: 380px;
+        font-size: 12px;
+    }
+
+    .feedbackrise-intro-image {
+        top: 145px;
+        right: 0;
+        width: 250px;
+    }
+
+    .feedbackrise-intro-image img {
+        max-width: 250px;
+    }
 }
+
 
 /* Mobile */
 
@@ -491,6 +622,9 @@ a {
         height: 24px;
     }
 
+
+    /* Hero */
+
     .hero {
         min-height: 280px;
         padding-top: 30px;
@@ -507,9 +641,7 @@ a {
 
     .issue-form {
         width: 80%;
-
         height: 48px;
-
         margin-top: 25px;
     }
 
@@ -521,7 +653,6 @@ a {
     .submit-button {
         width: 42px;
         height: 42px;
-
         margin-right: 3px;
     }
 
@@ -529,11 +660,88 @@ a {
         width: 22px;
         height: 22px;
     }
+
+
+    /* FeedbackRise */
+
+    .feedbackrise-intro {
+        min-height: auto;
+        padding: 45px 20px 55px;
+    }
+
+    .feedbackrise-intro-content {
+        min-height: auto;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 100%;
+    }
+
+    .feedbackrise-intro-text {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feedbackrise-intro-text h2 {
+        width: 100%;
+
+        margin: 0 0 38px;
+
+        text-align: center;
+
+        font-size: 22px;
+        line-height: 1.2;
+    }
+
+    .feedbackrise-intro-text h1 {
+        width: 100%;
+
+        margin: 0 0 10px;
+
+        text-align: center;
+
+        font-size: 28px;
+    }
+
+    .feedbackrise-intro-text p {
+        width: 100%;
+        max-width: 480px;
+
+        margin: 0;
+
+        text-align: center;
+
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    .feedbackrise-intro-image {
+        position: static;
+
+        width: 100%;
+
+        margin-top: 30px;
+    }
+
+    .feedbackrise-intro-image img {
+        width: 75%;
+        max-width: 270px;
+    }
 }
+
 
 /* Small Mobile */
 
 @media (max-width: 400px) {
+
+    .navbar {
+        padding: 0 16px;
+    }
 
     .brand-name {
         font-size: 12px;
@@ -549,7 +757,31 @@ a {
 
     .issue-form {
         width: 88%;
-
         margin-top: 25px;
+    }
+
+    .feedbackrise-intro {
+        padding: 40px 16px 50px;
+    }
+
+    .feedbackrise-intro-text h2 {
+        font-size: 20px;
+        margin-bottom: 32px;
+    }
+
+    .feedbackrise-intro-text h1 {
+        font-size: 24px;
+    }
+
+    .feedbackrise-intro-text p {
+        font-size: 11px;
+    }
+
+    .feedbackrise-intro-image {
+        margin-top: 28px;
+    }
+
+    .feedbackrise-intro-image img {
+        max-width: 230px;
     }
 }
