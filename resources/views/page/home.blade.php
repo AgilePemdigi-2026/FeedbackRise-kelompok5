@@ -6,7 +6,7 @@
 
     <title>FeedbackRise - Home</title>
 
-    <link rel="stylesheet" href="{{ asset('css/page/home.css') }}?v={{ time() }}">
+    <<link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ time() }}">
 </head>
 
 <body>
