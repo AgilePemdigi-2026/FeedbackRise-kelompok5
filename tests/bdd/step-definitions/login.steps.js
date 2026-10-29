@@ -1,16 +1,33 @@
 const { Given, When, Then } = require('@cucumber/cucumber');
 const { chromium } = require('playwright');
+const assert = require('assert');
 
 let browser;
 let page;
+let loginNotices = [];
+let signInMockHit = false;
+let pageConsole = [];
 
 Given('User is on the Login page at {string}', async function (url) {
+    loginNotices = [];
+    signInMockHit = false;
+    pageConsole = [];
+
     browser = await chromium.launch({
         channel: 'chrome',
         headless: true
     });
 
     page = await browser.newPage();
+
+    // Catat log console halaman untuk membantu diagnosis.
+    page.on('console', message => {
+        pageConsole.push(message.text());
+    });
+
+    page.on('pageerror', error => {
+        pageConsole.push(`PAGE ERROR: ${error.message}`);
+    });
 
     await page.goto(`http://localhost:8000${url}`);
 });
@@ -170,32 +187,141 @@ Then('User should see a notification that the password reset instructions have b
 
 // ==================== SCENARIO 5 ====================
 
+// Firebase (dengan "email enumeration protection" aktif) membalas akun
+// yang tidak terdaftar sama seperti password salah, sehingga aplikasi
+// tidak bisa membedakannya. Agar kondisi "akun belum terdaftar" bisa
+// diuji secara konsisten, respons Firebase untuk login disimulasikan
+// sebagai EMAIL_NOT_FOUND (dipetakan SDK menjadi auth/user-not-found).
+function isSignInRequest(url) {
+    return (
+        url.hostname === 'identitytoolkit.googleapis.com' &&
+        url.pathname.includes('accounts:signInWithPassword')
+    );
+}
+
 When(/^User enters an email\/username that is not registered$/, async function () {
+    // Catat pesan #login-error begitu muncul, karena aplikasi bisa
+    // langsung berpindah halaman setelah menampilkannya.
+    await page.exposeFunction('__captureLoginNotice', (text) => {
+        loginNotices.push(text);
+    });
+
+    await page.evaluate(() => {
+        const element = document.getElementById('login-error');
+
+        if (!element) {
+            return;
+        }
+
+        const check = () => {
+            const text = (element.textContent || '').trim();
+
+            if (!element.hidden && text) {
+                window.__captureLoginNotice(text);
+            }
+        };
+
+        new MutationObserver(check).observe(element, {
+            attributes: true,
+            childList: true,
+            characterData: true,
+            subtree: true
+        });
+
+        check();
+    });
+
+    await page.route(isSignInRequest, async route => {
+        const request = route.request();
+        const headers = request.headers();
+
+        const cors = {
+            'access-control-allow-origin': headers['origin'] || '*',
+            'access-control-allow-headers':
+                headers['access-control-request-headers'] || '*',
+            'access-control-allow-methods': 'GET,POST,OPTIONS'
+        };
+
+        if (request.method() === 'OPTIONS') {
+            await route.fulfill({ status: 204, headers: cors });
+            return;
+        }
+
+        signInMockHit = true;
+
+        await route.fulfill({
+            status: 400,
+            contentType: 'application/json',
+            headers: cors,
+            body: JSON.stringify({
+                error: {
+                    code: 400,
+                    message: 'EMAIL_NOT_FOUND',
+                    errors: [
+                        {
+                            message: 'EMAIL_NOT_FOUND',
+                            domain: 'global',
+                            reason: 'invalid'
+                        }
+                    ]
+                }
+            })
+        });
+    });
+
     await page.locator('#email').fill('unregistered@example.com');
     await page.locator('#password').fill('Test12345!');
 });
 
 Then('User should see a message that the account is not registered', async function () {
-    const errorMessage = page.locator('#login-error');
+    const start = Date.now();
+    let message = '';
 
-    await page.waitForFunction(() => {
-        const element = document.querySelector('#login-error');
-        return element && !element.hidden && element.textContent.trim() !== '';
-    });
+    while (Date.now() - start < 10000 && !message) {
+        message = loginNotices.find(text => text.trim()) || '';
 
-    await errorMessage.isVisible();
+        if (!message) {
+            const text = await page
+                .locator('#login-error')
+                .textContent({ timeout: 500 })
+                .catch(() => '');
+
+            message = (text || '').trim();
+        }
+
+        if (!message) {
+            await new Promise(resolve => setTimeout(resolve, 250));
+        }
+    }
+
+    assert(
+        message,
+        `Pesan akun belum terdaftar tidak muncul. URL: ${page.url()}`
+    );
 });
 
 Then('User should be redirected to the Registration page at {string}', async function (url) {
-    await page.waitForTimeout(1000);
+    try {
+        await page.waitForURL(`**${url}`, {
+            timeout: 10000
+        });
+    } catch (error) {
+        // Tampilkan kondisi halaman agar penyebabnya terlihat.
+        const loginError = await page
+            .locator('#login-error')
+            .textContent()
+            .catch(() => '');
 
-    console.log('URL setelah login:', page.url());
-
-    await page.waitForURL(`**${url}`, {
-        timeout: 10000
-    });
-
-    await browser.close();
+        throw new Error(
+            `Tidak ada redirect ke ${url}. URL saat ini: ${page.url()}. ` +
+            `Pesan di #login-error: "${(loginError || '').trim()}". ` +
+            `Pesan yang tercatat: ${JSON.stringify(loginNotices)}. ` +
+            `Respons Firebase disimulasikan: ${signInMockHit}. ` +
+            `Console halaman: ${JSON.stringify(pageConsole.slice(-8))}`
+        );
+    } finally {
+        await browser.close();
+    }
 });
 
 // ==================== SCENARIO 6 ====================

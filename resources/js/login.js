@@ -32,6 +32,8 @@ if (loginForm) {
             window.location.href = "/home";
 
         } catch (error) {
+            console.error("Login error:", error.code, error.message);
+
             // System error
             if (error.message === "SIMULATED_SYSTEM_ERROR") {
                 errorElement.textContent =
@@ -41,15 +43,17 @@ if (loginForm) {
                 return;
             }
 
-            // Akun tidak terdaftar
-            if (
-                error.code === "auth/user-not-found" ||
-                error.code === "auth/invalid-credential"
-            ) {
+            // Akun tidak terdaftar: arahkan ke halaman registrasi
+            if (error.code === "auth/user-not-found") {
                 errorElement.textContent =
-                    "Email atau password tidak sesuai.";
+                    "Akun belum terdaftar. Mengalihkan ke halaman registrasi...";
 
                 errorElement.hidden = false;
+
+                setTimeout(() => {
+                    window.location.href = "/register";
+                }, 1500);
+
                 return;
             }
 

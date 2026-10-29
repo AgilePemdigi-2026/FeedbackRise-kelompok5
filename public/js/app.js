@@ -48341,6 +48341,9 @@ if (loginForm) {
           case 4:
             _context.p = 4;
             _t = _context.v;
+            console.error("Login error:", _t.code, _t.message);
+
+            // System error
             if (!(_t.message === "SIMULATED_SYSTEM_ERROR")) {
               _context.n = 5;
               break;
@@ -48349,12 +48352,15 @@ if (loginForm) {
             errorElement.hidden = false;
             return _context.a(2);
           case 5:
-            if (!(_t.code === "auth/user-not-found" || _t.code === "auth/invalid-credential")) {
+            if (!(_t.code === "auth/user-not-found")) {
               _context.n = 6;
               break;
             }
-            errorElement.textContent = "Email atau password tidak sesuai.";
+            errorElement.textContent = "Akun belum terdaftar. Mengalihkan ke halaman registrasi...";
             errorElement.hidden = false;
+            setTimeout(function () {
+              window.location.href = "/register";
+            }, 1500);
             return _context.a(2);
           case 6:
             // Password salah / credential tidak valid
