@@ -157,6 +157,7 @@
                     <button
                         type="submit"
                         class="submit-button"
+                        id="analyzeButton"
                         aria-label="Analyze Issue"
                     >
                         <svg
