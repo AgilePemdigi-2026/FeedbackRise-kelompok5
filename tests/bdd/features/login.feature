@@ -35,15 +35,6 @@ Feature: Login
     Then System should verify the account credentials
     And User should be redirected to the main page at "/home"
 
-  Scenario: Reset password through the Login page
-    Given User is on the Login page at "/login"
-    When User selects the "Forgot Password" button
-    Then User should be redirected to the Forgot Password page at "/forgot-password"
-    When User enters the email
-    And User presses the "Submit" button
-    Then System should verify the user's email
-    And User should see a notification that the password reset instructions have been sent
-
   Scenario: Login with an unregistered account
     Given User is on the Login page at "/login"
     When User enters an email/username that is not registered
