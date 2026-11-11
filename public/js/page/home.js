@@ -1,122 +1,104 @@
-/******/ (() => { // webpackBootstrap
-var __webpack_exports__ = {};
-/*!***********************************!*\
-  !*** ./resources/js/page/home.js ***!
-  \***********************************/
-function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i["return"]) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
-function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
-function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
-function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 document.addEventListener('DOMContentLoaded', function () {
-  var profileButton = document.getElementById('profileButton');
-  var profileMenu = document.getElementById('profileMenu');
-  var logoutButton = document.getElementById('logoutButton');
-  var issueForm = document.getElementById('issueForm');
-  var issueUrl = document.getElementById('issueUrl');
-  var submitButton = issueForm.querySelector('.submit-button');
+    const profileButton = document.getElementById('profileButton');
+    const profileMenu = document.getElementById('profileMenu');
+    const logoutButton = document.getElementById('logoutButton');
+    const issueForm = document.getElementById('issueForm');
+    const issueUrl = document.getElementById('issueUrl');
+    const issueLimit = document.getElementById('issueLimit');
+    const issueState = document.getElementById('issueState');
+    const submitButton = issueForm.querySelector('.submit-button');
+    const status = document.getElementById('analysisStatus');
+    const results = document.getElementById('analysisResults');
 
-  /* Profile menu */
+    profileButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        profileMenu.classList.toggle('show');
+    });
+    document.addEventListener('click', function (event) {
+        if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) profileMenu.classList.remove('show');
+    });
+    logoutButton.addEventListener('click', function () {
+        if (confirm('Apakah kamu yakin ingin logout?')) window.location.href = '/login';
+    });
 
-  profileButton.addEventListener('click', function (event) {
-    event.stopPropagation();
-    profileMenu.classList.toggle('show');
-  });
-
-  /* Close profile menu */
-
-  document.addEventListener('click', function (event) {
-    if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
-      profileMenu.classList.remove('show');
+    function addText(parent, tag, text, className) {
+        const element = document.createElement(tag);
+        element.textContent = text;
+        if (className) element.className = className;
+        parent.appendChild(element);
+        return element;
     }
-  });
 
-  /* Logout */
-
-  logoutButton.addEventListener('click', function () {
-    var confirmation = confirm('Apakah kamu yakin ingin logout?');
-    if (confirmation) {
-      window.location.href = '/login';
-    }
-  });
-
-  /* Analyze GitHub Issues */
-
-  issueForm.addEventListener('submit', /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(event) {
-      var url, response, data, _t;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.p = _context.n) {
-          case 0:
-            event.preventDefault();
-            url = issueUrl.value.trim();
-            /* Validasi input kosong */
-            if (!(url === '')) {
-              _context.n = 1;
-              break;
-            }
-            alert('Silakan masukkan URL issue terlebih dahulu.');
-            issueUrl.focus();
-            return _context.a(2);
-          case 1:
-            if (!(!url.includes('github.com/') || !url.includes('/issues'))) {
-              _context.n = 2;
-              break;
-            }
-            alert('Silakan masukkan URL GitHub Issues yang valid.');
-            issueUrl.focus();
-            return _context.a(2);
-          case 2:
-            /* Disable tombol selama proses */
-
-            submitButton.disabled = true;
-            _context.p = 3;
-            _context.n = 4;
-            return fetch('/api/github/issues', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-              },
-              body: JSON.stringify({
-                issue_url: url
-              })
+    function showResults(data) {
+        const analysis = data.analysis;
+        document.getElementById('analysisMeta').textContent = data.repository + ' · ' +
+            data.total_issues + ' issue dianalisis · batas ' + data.requested_limit +
+            ' · status ' + data.state + ' · ' + data.github_pages + ' halaman GitHub';
+        document.getElementById('analysisSummary').textContent = analysis.overall_summary;
+        document.getElementById('analysisNote').textContent = data.selection + ' ' + analysis.note +
+            (data.page_scan_limit_reached ? ' Pengambilan berhenti pada batas 20 halaman GitHub.' : '');
+        const list = document.getElementById('recommendationList');
+        list.replaceChildren();
+        analysis.recommendations.forEach(function (item) {
+            const card = document.createElement('article');
+            card.className = 'recommendation-card';
+            addText(card, 'p', 'Prioritas ' + item.rank + ' · ' + item.issue_count + ' issue (' + item.percentage + '%)', 'recommendation-count');
+            addText(card, 'h3', item.category);
+            addText(card, 'p', item.summary);
+            addText(card, 'h4', 'Rekomendasi pengembangan');
+            addText(card, 'p', item.recommendation);
+            const evidence = addText(card, 'div', '', 'recommendation-evidence');
+            addText(evidence, 'span', 'Bukti issue: ');
+            item.issue_numbers.forEach(function (number) {
+                const link = addText(evidence, 'a', '#' + number);
+                link.href = 'https://github.com/' + data.repository + '/issues/' + number;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
             });
-          case 4:
-            response = _context.v;
-            _context.n = 5;
-            return response.json();
-          case 5:
-            data = _context.v;
-            if (response.ok) {
-              _context.n = 6;
-              break;
-            }
-            throw new Error(data.message || 'Gagal melakukan analisis.');
-          case 6:
-            /* Tampilkan hasil sementara di Console */
+            list.appendChild(card);
+        });
+        results.hidden = false;
+    }
 
-            console.log('Hasil analisis:', JSON.stringify(data, null, 2));
-            alert('Analisis berhasil dilakukan.');
-            _context.n = 8;
-            break;
-          case 7:
-            _context.p = 7;
-            _t = _context.v;
-            console.error('Error:', _t);
-            alert(_t.message || 'Terjadi kesalahan saat melakukan analisis.');
-          case 8:
-            _context.p = 8;
-            submitButton.disabled = false;
-            return _context.f(8);
-          case 9:
-            return _context.a(2);
+    issueForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        if (submitButton.disabled) return;
+        const url = issueUrl.value.trim();
+        if (!/^https:\/\/github\.com\/[A-Za-z0-9-]+\/[A-Za-z0-9_.-]+\/issues\/?$/i.test(url)) {
+            status.textContent = 'Masukkan URL https://github.com/owner/repository/issues.';
+            status.className = 'analysis-status is-error';
+            return;
         }
-      }, _callee, null, [[3, 7, 8, 9]]);
-    }));
-    return function (_x) {
-      return _ref.apply(this, arguments);
-    };
-  }());
+        if (!issueLimit.reportValidity()) return;
+        submitButton.disabled = true;
+        issueForm.setAttribute('aria-busy', 'true');
+        results.hidden = true;
+        status.className = 'analysis-status';
+        status.textContent = 'Mengambil issue dan menyiapkan rekomendasi. Mohon tunggu...';
+        try {
+            const response = await fetch('/api/github/issues', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                body: JSON.stringify({issue_url: url, max_issues: Number(issueLimit.value), state: issueState.value})
+            });
+            const text = await response.text();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (error) {
+                throw new Error('Server mengembalikan respons bukan JSON. Periksa terminal Laravel dan storage/logs/laravel.log.');
+            }
+            if (!response.ok) throw new Error(data.message || data.detail || 'Analisis gagal.');
+            showResults(data);
+            console.log('Hasil analisis:', data);
+            status.textContent = 'Selesai. Rekomendasi ditampilkan di bawah.';
+            results.scrollIntoView({behavior: 'smooth', block: 'start'});
+        } catch (error) {
+            status.className = 'analysis-status is-error';
+            status.textContent = error.message || 'Analisis gagal. Periksa terminal Laravel dan Uvicorn.';
+        } finally {
+            submitButton.disabled = false;
+            issueForm.removeAttribute('aria-busy');
+        }
+    });
 });
-/******/ })()
-;

@@ -185,9 +185,34 @@
                     </button>
 
                 </form>
+                <div class="analysis-controls">
+                    <label for="issueLimit">Batas issue
+                        <input type="number" id="issueLimit" name="max_issues" form="issueForm"
+                            min="1" max="{{ config('services.github.max_issues', 500) }}"
+                            value="{{ min(config('services.github.max_issues', 500), max(1, config('services.github.default_limit', 20))) }}"
+                            required>
+                    </label>
+                    <label for="issueState">Status
+                        <select id="issueState" name="state" form="issueForm">
+                            <option value="open" @selected(config('services.github.state', 'open') === 'open')>Open</option>
+                            <option value="closed" @selected(config('services.github.state') === 'closed')>Closed</option>
+                            <option value="all" @selected(config('services.github.state') === 'all')>Open + Closed</option>
+                        </select>
+                    </label>
+                </div>
+                <p id="analysisStatus" class="analysis-status" role="status" aria-live="polite"></p>
+
 
             </section>
 
+
+            <section class="analysis-results" id="analysisResults" aria-labelledby="analysisHeading" hidden>
+                <h2 id="analysisHeading">Rekomendasi pengembangan</h2>
+                <p id="analysisMeta" class="analysis-meta"></p>
+                <p id="analysisSummary" class="analysis-summary"></p>
+                <div id="recommendationList" class="recommendation-list"></div>
+                <p id="analysisNote" class="analysis-note"></p>
+            </section>
 
             <!-- FeedbackRise Introduction Section -->
             <section class="feedbackrise-intro">

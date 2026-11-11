@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -9,173 +10,127 @@ class GitHubController extends Controller
 {
     public function getIssues(Request $request)
     {
+        $maximum = config('services.github.max_issues', 500);
         $request->validate([
             'issue_url' => ['required', 'url'],
+            'max_issues' => ['sometimes', 'integer', 'min:1', 'max:' . $maximum],
+            'state' => ['sometimes', 'in:open,closed,all'],
         ]);
 
-        $url = rtrim($request->issue_url, '/');
+        $url = rtrim(trim($request->issue_url), '/');
+        if (!preg_match('#^https://github\.com/([A-Za-z0-9-]+)/([A-Za-z0-9_.-]+)/issues$#i', $url, $matches)) {
+            return response()->json(['message' => 'Gunakan URL https://github.com/owner/repository/issues.'], 422);
+        }
 
-        /*
-         * Mengambil owner dan repository dari URL:
-         * https://github.com/owner/repository/issues
-         */
-        if (!preg_match(
-            '#github\.com/([^/]+)/([^/]+)/issues$#',
-            $url,
-            $matches
-        )) {
-            return response()->json([
-                'message' => 'URL GitHub Issues tidak valid.'
-            ], 400);
+        $token = trim((string) config('services.github.token'));
+        if ($token === '') {
+            return response()->json(['message' => 'GITHUB_TOKEN belum diisi di .env. Isi token lalu jalankan php artisan config:clear.'], 503);
         }
 
         $owner = $matches[1];
         $repo = $matches[2];
+        $limit = (int) $request->input('max_issues', min($maximum, max(1, config('services.github.default_limit', 20))));
+        $state = $request->input('state', config('services.github.state', 'open'));
+        $issues = collect();
+        $page = 0;
+        $hasNext = true;
+        $rateLimit = [];
+        $timeout = config('services.ai.timeout', 240);
+        @set_time_limit($timeout + 120);
 
-        /*
-         * Mengambil SELURUH Issues dari GitHub
-         * menggunakan cursor-based pagination.
-         */
-        $allIssues = collect();
-
-        $perPage = 100;
-        $after = null;
-
-        do {
-            $query = [
-                'state' => 'all',
-                'per_page' => $perPage,
-            ];
-
-            /*
-             * Request berikutnya menggunakan cursor
-             * "after" yang diberikan oleh GitHub.
-             */
-            if ($after) {
-                $query['after'] = $after;
-            }
-
-            $response = Http::withToken(env('GITHUB_TOKEN'))
-                ->withHeaders([
+        // Limit total issue setelah Pull Request disaring. Batas halaman mencegah
+        // request tanpa akhir pada repository yang didominasi Pull Request.
+        try {
+            while ($issues->count() < $limit && $hasNext && $page < 20) {
+                $page++;
+                $response = Http::withToken($token)->acceptJson()->withHeaders([
                     'Accept' => 'application/vnd.github+json',
                     'User-Agent' => 'FeedbackRise',
                     'X-GitHub-Api-Version' => '2026-03-10',
-                ])
-                ->get(
+                ])->connectTimeout(10)->timeout(30)->get(
                     "https://api.github.com/repos/{$owner}/{$repo}/issues",
-                    $query
+                    ['state' => $state, 'per_page' => 100, 'page' => $page, 'sort' => 'created', 'direction' => 'desc']
                 );
 
-            if ($response->failed()) {
-                return response()->json([
-                    'message' => 'Gagal mengambil Issues dari GitHub.',
-                    'status' => $response->status(),
-                    'error' => $response->json(),
-                ], 500);
-            }
+                $rateLimit = [
+                    'remaining' => $response->header('X-RateLimit-Remaining'),
+                    'reset' => $response->header('X-RateLimit-Reset'),
+                ];
 
-            $pageIssues = collect($response->json());
+                if ($response->failed()) {
+                    $status = $response->status();
+                    $message = $status === 401
+                        ? 'Token GitHub tidak valid atau kedaluwarsa. Periksa GITHUB_TOKEN.'
+                        : ($status === 403 || $status === 429
+                            ? 'GitHub menolak request. Periksa kuota, izin token, dan waktu reset.'
+                            : 'Gagal mengambil issue dari GitHub. Periksa URL repository.');
+                    return response()->json([
+                        'message' => $message,
+                        'service' => 'github',
+                        'status' => $status,
+                        'github_rate_limit' => $rateLimit,
+                    ], $status === 429 || ($status === 403 && $rateLimit['remaining'] === '0') ? 429 : 502);
+                }
 
-            /*
-             * Tambahkan Issue dari halaman saat ini
-             * ke seluruh Issue yang sudah dikumpulkan.
-             */
-            $allIssues = $allIssues->merge($pageIssues);
-
-            /*
-             * Ambil cursor "after" dari Link header
-             * untuk request berikutnya.
-             */
-            $after = null;
-
-            $linkHeader = $response->header('Link');
-
-            if ($linkHeader) {
-                if (preg_match(
-                    '/<([^>]+)>;\s*rel="next"/',
-                    $linkHeader,
-                    $matches
-                )) {
-                    $nextUrl = $matches[1];
-
-                    $parsedUrl = parse_url($nextUrl);
-
-                    if (isset($parsedUrl['query'])) {
-                        parse_str(
-                            $parsedUrl['query'],
-                            $nextQuery
-                        );
-
-                        $after = $nextQuery['after'] ?? null;
+                foreach ($response->json() as $issue) {
+                    if (isset($issue['pull_request'])) {
+                        continue;
+                    }
+                    $issues->push([
+                        'number' => $issue['number'],
+                        'title' => $issue['title'],
+                        'body' => mb_substr($issue['body'] ?? '', 0, 2000),
+                        'state' => $issue['state'],
+                        'url' => $issue['html_url'],
+                    ]);
+                    if ($issues->count() >= $limit) {
+                        break;
                     }
                 }
+                $hasNext = preg_match('/;\s*rel="next"/', $response->header('Link') ?? '') === 1;
             }
+        } catch (ConnectionException $exception) {
+            return response()->json(['message' => 'Tidak dapat terhubung ke GitHub. Periksa koneksi internet.', 'service' => 'github'], 502);
+        }
 
-        } while ($after);
+        if ($issues->isEmpty()) {
+            return response()->json(['message' => 'Tidak ditemukan issue biasa pada halaman yang diperiksa. Coba pilihan Open + Closed.', 'github_pages' => $page], 422);
+        }
 
-
-        /*
-         * Mengambil Issue biasa, bukan Pull Request.
-         */
-        $issues = $allIssues
-            ->filter(function ($issue) {
-                return !isset($issue['pull_request']);
-            })
-            ->map(function ($issue) {
-                return [
-                    'number' => $issue['number'],
-                    'title' => $issue['title'],
-                    'body' => $issue['body'],
-                    'state' => $issue['state'],
-                    'url' => $issue['html_url'],
-                ];
-            })
-            ->values();
-
-
-        /*
-         * Menggabungkan title dan body setiap Issue
-         * untuk dikirim ke AI Service.
-         */
-        $issueTexts = $issues
-            ->map(function ($issue) {
-                return trim(
-                    $issue['title'] . "\n" .
-                    ($issue['body'] ?? '')
-                );
-            })
-            ->filter()
-            ->values()
-            ->toArray();
-
-
-        /*
-         * Mengirim SELURUH Issue ke Python AI Service.
-         */
-        $aiResponse = Http::post(
-            env('AI_SERVICE_URL') . '/analyze',
-            [
-                'issues' => $issueTexts,
-            ]
-        );
+        try {
+            $aiResponse = Http::acceptJson()->connectTimeout(5)->timeout($timeout)->post(
+                rtrim(config('services.ai.url'), '/') . '/analyze',
+                ['issues' => $issues->values()->all()]
+            );
+        } catch (ConnectionException $exception) {
+            return response()->json(['message' => 'AI Service tidak terhubung atau terlalu lama merespons. Pastikan Uvicorn berjalan di port 8001 dan coba kurangi jumlah issue.', 'service' => 'ai'], 502);
+        }
 
         if ($aiResponse->failed()) {
             return response()->json([
-                'message' => 'Gagal melakukan analisis AI.',
+                'message' => $aiResponse->json('detail') ?? 'AI Service gagal memproses issue. Lihat terminal Uvicorn.',
+                'service' => 'ai',
                 'status' => $aiResponse->status(),
-                'error' => $aiResponse->body(),
-            ], 500);
+            ], $aiResponse->status() === 429 ? 429 : 502);
         }
 
+        $analysis = $aiResponse->json();
+        if (!is_array($analysis) || !isset($analysis['recommendations'])) {
+            return response()->json(['message' => 'Respons AI Service tidak sesuai. Pastikan main.py terbaru sudah dijalankan ulang.', 'service' => 'ai'], 502);
+        }
 
-        /*
-         * Mengembalikan seluruh Issue dan hasil analisis AI.
-         */
         return response()->json([
             'repository' => "{$owner}/{$repo}",
+            'requested_limit' => $limit,
             'total_issues' => $issues->count(),
-            'issues' => $issues,
-            'analysis' => $aiResponse->json(),
+            'state' => $state,
+            'selection' => 'Issue terbaru berdasarkan tanggal dibuat; Pull Request dan komentar tidak dianalisis.',
+            'limit_reached' => $issues->count() >= $limit,
+            'page_scan_limit_reached' => $page >= 20 && $hasNext && $issues->count() < $limit,
+            'github_pages' => $page,
+            'github_rate_limit' => $rateLimit,
+            'issues' => $issues->values(),
+            'analysis' => $analysis,
         ]);
     }
 }
