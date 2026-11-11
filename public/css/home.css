@@ -39,7 +39,9 @@ a {
 }
 
 
-/* Navbar */
+/* Navbar
+   Grid 3 kolom: logo (kiri) | menu (tengah) | profil (kanan).
+   Ketiganya otomatis sejajar secara vertikal. */
 
 .navbar {
     position: relative;
@@ -47,50 +49,34 @@ a {
     height: 115px;
     padding: 0 40px;
 
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
 
     background: #ffffff;
     z-index: 20;
 }
 
 
-/* Brand */
+/* Brand (hanya logo-feedbackrise.png, nama sudah ada di gambar) */
 
 .brand {
+    justify-self: start;
+
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
 }
 
 .logo {
-    width: 38px;
-    height: 42px;
+    height: 34px;
+    width: auto;
     display: block;
-    object-fit: contain;
-}
-
-.brand-name {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.7px;
-    line-height: 1;
-    color: #000000;
-    white-space: nowrap;
 }
 
 
 /* Navigation */
 
 .navigation {
-    position: absolute;
-    left: 50%;
-    top: 32px;
-    transform: translateX(-50%);
-
     display: flex;
     align-items: center;
     gap: 32px;
@@ -123,8 +109,7 @@ a {
 
 .profile-container {
     position: relative;
-    margin-left: auto;
-    flex-shrink: 0;
+    justify-self: end;
 }
 
 .profile-button {
@@ -270,7 +255,7 @@ a {
 
     color: #000000;
 
-    font-size: 42px;
+    font-size: 48px;
     line-height: 1.15;
     font-weight: 400;
 
@@ -367,48 +352,38 @@ a {
 
 .feedbackrise-intro {
     width: 100%;
-    min-height: 500px;
 
-    padding: 55px 40px 70px;
+    padding: 70px 40px 80px;
 
     background: #ffffff;
 }
 
-.feedbackrise-intro-content {
-    position: relative;
 
+/* Heading di tengah */
+
+.feedbackrise-intro-heading {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1200px;
 
-    min-height: 390px;
+    margin: 0 auto 70px;
 
-    margin: 0 auto;
+    text-align: center;
 }
 
-
-/* FeedbackRise Heading */
-
-.feedbackrise-intro-text {
-    width: 100%;
-}
-
-.feedbackrise-intro-text h2 {
-    width: 100%;
-
-    margin: 0 0 78px;
+.feedbackrise-intro-heading h2 {
+    margin: 0;
     padding: 0;
 
     text-align: center;
 
-    font-size: 30px;
-    line-height: 1.15;
-
+    font-size: 34px;
+    line-height: 1.25;
     font-weight: 800;
 
     color: #000000;
 }
 
-.feedbackrise-intro-text h2 span {
+.feedbackrise-intro-heading h2 span {
     display: block;
 
     margin-top: 3px;
@@ -417,48 +392,52 @@ a {
 }
 
 
-/* FeedbackRise Description Area */
+/* Teks (kiri) dan gambar (kanan) sejajar */
 
+.feedbackrise-intro-content {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.feedbackrise-intro-text {
+    flex: 1 1 auto;
+    max-width: 560px;
+}
+
+/* Disamakan dengan .features-title */
 .feedbackrise-intro-text h1 {
-    width: 52%;
-
-    margin: 0 0 12px;
+    margin: 0 0 6px;
     padding: 0;
 
-    font-size: 34px;
-    line-height: 1.2;
-
+    font-size: 50px;
+    line-height: 1.1;
     font-weight: 400;
-
-    letter-spacing: 0;
+    letter-spacing: -0.5px;
 
     color: #ed4d3d;
 }
 
+/* Disamakan dengan .features-subtitle */
 .feedbackrise-intro-text p {
-    width: 52%;
-    max-width: 560px;
-
     margin: 0;
     padding: 0;
 
-    font-size: 13px;
-    line-height: 1.7;
-
+    font-size: 16px;
+    line-height: 1.6;
     font-weight: 400;
 
-    color: #222222;
+    color: #111111;
 }
 
-
-/* Illustration */
-
 .feedbackrise-intro-image {
-    position: absolute;
-
-    top: 155px;
-    right: 20px;
-
+    flex: 0 0 320px;
     width: 320px;
 
     display: flex;
@@ -488,16 +467,10 @@ a {
     }
 
     .logo {
-        width: 34px;
-        height: 38px;
-    }
-
-    .brand-name {
-        font-size: 18px;
+        height: 32px;
     }
 
     .navigation {
-        top: 27px;
         gap: 24px;
     }
 
@@ -511,7 +484,7 @@ a {
     }
 
     .hero h1 {
-        font-size: 36px;
+        font-size: 40px;
     }
 
     .issue-form {
@@ -530,34 +503,32 @@ a {
     /* FeedbackRise */
 
     .feedbackrise-intro {
-        min-height: 450px;
-        padding: 50px 30px 60px;
+        padding: 55px 30px 65px;
+    }
+
+    .feedbackrise-intro-heading {
+        margin-bottom: 50px;
+    }
+
+    .feedbackrise-intro-heading h2 {
+        font-size: 28px;
     }
 
     .feedbackrise-intro-content {
         max-width: 720px;
-        min-height: 350px;
-    }
-
-    .feedbackrise-intro-text h2 {
-        margin-bottom: 65px;
-        font-size: 26px;
+        gap: 30px;
     }
 
     .feedbackrise-intro-text h1 {
-        width: 52%;
-        font-size: 29px;
+        font-size: 40px;
     }
 
     .feedbackrise-intro-text p {
-        width: 52%;
-        max-width: 380px;
-        font-size: 12px;
+        font-size: 14px;
     }
 
     .feedbackrise-intro-image {
-        top: 145px;
-        right: 0;
+        flex-basis: 250px;
         width: 250px;
     }
 
@@ -577,21 +548,10 @@ a {
     }
 
     .logo {
-        width: 27px;
-        height: 31px;
-    }
-
-    .brand {
-        gap: 8px;
-    }
-
-    .brand-name {
-        font-size: 14px;
-        letter-spacing: -0.4px;
+        height: 26px;
     }
 
     .navigation {
-        top: 26px;
         gap: 16px;
     }
 
@@ -627,7 +587,7 @@ a {
     }
 
     .hero h1 {
-        font-size: 29px;
+        font-size: 30px;
         line-height: 1.15;
     }
 
@@ -654,70 +614,47 @@ a {
     }
 
 
-    /* FeedbackRise */
+    /* FeedbackRise: teks di atas, gambar di bawah */
 
     .feedbackrise-intro {
-        min-height: auto;
         padding: 45px 20px 55px;
     }
 
-    .feedbackrise-intro-content {
-        min-height: auto;
+    .feedbackrise-intro-heading {
+        margin-bottom: 38px;
+    }
 
-        display: flex;
+    .feedbackrise-intro-heading h2 {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+
+    .feedbackrise-intro-content {
         flex-direction: column;
         align-items: center;
-
-        width: 100%;
+        gap: 30px;
     }
 
     .feedbackrise-intro-text {
         width: 100%;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .feedbackrise-intro-text h2 {
-        width: 100%;
-
-        margin: 0 0 38px;
+        max-width: 480px;
 
         text-align: center;
-
-        font-size: 22px;
-        line-height: 1.2;
     }
 
     .feedbackrise-intro-text h1 {
-        width: 100%;
-
-        margin: 0 0 10px;
-
-        text-align: center;
-
-        font-size: 28px;
+        margin-bottom: 6px;
+        font-size: 32px;
     }
 
     .feedbackrise-intro-text p {
-        width: 100%;
-        max-width: 480px;
-
-        margin: 0;
-
-        text-align: center;
-
-        font-size: 12px;
-        line-height: 1.7;
+        font-size: 13px;
+        line-height: 1.6;
     }
 
     .feedbackrise-intro-image {
-        position: static;
-
+        flex: 0 0 auto;
         width: 100%;
-
-        margin-top: 30px;
     }
 
     .feedbackrise-intro-image img {
@@ -735,8 +672,8 @@ a {
         padding: 0 16px;
     }
 
-    .brand-name {
-        font-size: 12px;
+    .logo {
+        height: 22px;
     }
 
     .navigation {
@@ -756,21 +693,20 @@ a {
         padding: 40px 16px 50px;
     }
 
-    .feedbackrise-intro-text h2 {
-        font-size: 20px;
+    .feedbackrise-intro-heading {
         margin-bottom: 32px;
     }
 
+    .feedbackrise-intro-heading h2 {
+        font-size: 20px;
+    }
+
     .feedbackrise-intro-text h1 {
-        font-size: 24px;
+        font-size: 32px;
     }
 
     .feedbackrise-intro-text p {
-        font-size: 11px;
-    }
-
-    .feedbackrise-intro-image {
-        margin-top: 28px;
+        font-size: 13px;
     }
 
     .feedbackrise-intro-image img {
@@ -821,3 +757,487 @@ a {
 .recommendation-count { color: #3048a9; font-weight: 700; }
 .recommendation-evidence { display: flex; gap: 8px; flex-wrap: wrap; font-size: 13px; line-height: 1.6; }
 .recommendation-evidence a { color: #3048a9; text-decoration: underline; }
+
+
+/* ==================================================
+   Our Features
+   ================================================== */
+
+.features {
+    width: 100%;
+
+    padding: 30px 40px 90px;
+
+    background: #ffffff;
+}
+
+.features-inner {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+}
+
+
+/* Header */
+
+.features-header {
+    margin-bottom: 48px;
+}
+
+.features-title {
+    margin: 0 0 6px;
+    padding: 0;
+
+    font-size: 50px;
+    line-height: 1.1;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+
+    color: #000000;
+}
+
+.features-title span {
+    color: #2149c1;
+}
+
+.features-subtitle {
+    max-width: 560px;
+
+    margin: 0;
+    padding: 0;
+
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 400;
+
+    color: #111111;
+}
+
+
+/* Grid kartu */
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+
+/* Kartu: gambar icon-features.png dipotong per kartu lewat
+   background-position. Gambar asli 1336 x 427 px berisi 3 kartu
+   (masing-masing 422 px) lengkap dengan ikonnya. */
+
+.feature-card {
+    aspect-ratio: 422 / 427;
+    container-type: inline-size;
+
+    padding: 9.5% 7% 0;
+
+    background-image: url('../images/icon-features.png');
+    background-repeat: no-repeat;
+    background-size: 316.588% 100%;
+    background-position: 0% 0;
+
+    text-align: center;
+}
+
+.feature-card--grouping {
+    background-position: 0% 0;
+}
+
+.feature-card--priority {
+    background-position: 49.89% 0;
+}
+
+.feature-card--actions {
+    background-position: 100% 0;
+}
+
+
+/* Teks ikut mengecil mengikuti lebar kartu (satuan cqw) */
+
+.feature-card h3 {
+    margin: 0 0 16px;
+    margin-bottom: 4.5cqw;
+    padding: 0;
+
+    font-size: 23px;
+    font-size: max(14px, 6.6cqw);
+    line-height: 1.2;
+    font-weight: 700;
+
+    color: #2149c1;
+}
+
+.feature-card p {
+    margin: 0;
+    padding: 0;
+
+    font-size: 15px;
+    font-size: max(10px, 4.5cqw);
+    line-height: 1.6;
+    font-weight: 400;
+
+    color: #111111;
+}
+
+
+/* Tablet dan Mobile: kartu tersusun ke bawah */
+
+@media (max-width: 800px) {
+
+    .features {
+        padding: 20px 30px 70px;
+    }
+
+    .features-header {
+        margin-bottom: 36px;
+    }
+
+    .features-title {
+        font-size: 40px;
+    }
+
+    .features-subtitle {
+        font-size: 14px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+
+        max-width: 380px;
+        margin: 0 auto;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .features {
+        padding: 15px 20px 55px;
+    }
+
+    .features-header {
+        margin-bottom: 28px;
+    }
+
+    .features-title {
+        font-size: 32px;
+    }
+
+    .features-subtitle {
+        font-size: 13px;
+    }
+}
+
+
+/* ==================================================
+   How It Works
+   Memakai header dan grid yang sama dengan "Our Features"
+   (.features, .features-header, .features-grid, dst.)
+   ================================================== */
+
+.features.how-it-works {
+    padding-top: 0;
+}
+
+.how-it-works .features-subtitle {
+    max-width: 640px;
+}
+
+
+/* Kartu: gambar icon-how-it-works.png (1336 x 338 px, 3 kartu @ 422 px)
+   dipotong per kartu lewat background-position. Ikon sudah ada di
+   gambar, jadi teks diletakkan di bawah ikon. */
+
+.how-card {
+    aspect-ratio: 422 / 338;
+    container-type: inline-size;
+
+    padding: 30.1% 7% 0;
+
+    background-image: url('../images/icon-how-it-works.png');
+    background-repeat: no-repeat;
+    background-size: 316.588% 100%;
+    background-position: 0% 0;
+
+    text-align: center;
+}
+
+.how-card--input {
+    background-position: 0% 0;
+}
+
+.how-card--analyze {
+    background-position: 49.89% 0;
+}
+
+.how-card--insights {
+    background-position: 100% 0;
+}
+
+
+/* Judul diberi tinggi 2 baris dan ditengahkan secara vertikal, jadi
+   deskripsi selalu mulai di posisi yang sama di ketiga kartu. */
+
+.how-card h3 {
+    min-height: 52px;
+    min-height: 16.2cqw;
+
+    margin: 0 0 16px;
+    margin-bottom: 4.7cqw;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 21px;
+    font-size: max(14px, 6.2cqw);
+    line-height: 1.3;
+    font-weight: 700;
+
+    text-align: center;
+
+    color: #2149c1;
+}
+
+.how-card p {
+    margin: 0;
+    padding: 0;
+
+    font-size: 16px;
+    font-size: max(11px, 4.7cqw);
+    line-height: 1.5;
+    font-weight: 400;
+
+    color: #111111;
+}
+
+
+/* ==================================================
+   Footer
+   ================================================== */
+
+.footer {
+    width: 100%;
+
+    padding: 80px 40px 52px;
+
+    background: #adc3f1;
+    color: #000000;
+}
+
+.footer-inner {
+    width: 100%;
+    max-width: 1100px;
+
+    margin: 0 auto;
+}
+
+.footer-main {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 65px;
+}
+
+
+/* Kiri: logo dan deskripsi */
+
+.footer-logo {
+    width: 350px;
+    max-width: 100%;
+    height: auto;
+
+    display: block;
+}
+
+.footer-description {
+    max-width: 420px;
+
+    margin: 38px 0 0;
+    padding: 0;
+
+    font-size: 16px;
+    line-height: 1.55;
+    font-weight: 400;
+}
+
+
+/* Kanan: kontak dan navigasi */
+
+.footer-contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 2px solid #ffffff;
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-contact-icon {
+    width: 44px;
+    height: 44px;
+
+    display: block;
+
+    flex-shrink: 0;
+}
+
+.footer-contact-text {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+.footer-contact-label {
+    font-size: 20px;
+    line-height: 1.15;
+    font-weight: 700;
+}
+
+.footer-contact-value {
+    font-size: 16px;
+    line-height: 1.25;
+
+    overflow-wrap: anywhere;
+}
+
+.footer-contact-value:hover {
+    text-decoration: underline;
+}
+
+.footer-nav {
+    margin-top: 28px;
+    padding-left: 3px;
+}
+
+.footer-nav h3 {
+    margin: 0 0 16px;
+    padding: 0;
+
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 700;
+}
+
+.footer-nav ul {
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.footer-nav li {
+    margin: 0 0 12px;
+}
+
+.footer-nav a {
+    font-size: 17px;
+    line-height: 1.3;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline;
+}
+
+
+/* Bawah: garis dan hak cipta */
+
+.footer-bottom {
+    margin-top: 90px;
+    padding-top: 30px;
+
+    border-top: 2px solid #c6d5f5;
+
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.footer-dot {
+    margin: 0 6px;
+}
+
+
+/* Tablet */
+
+@media (max-width: 800px) {
+
+    .footer {
+        padding: 55px 30px 40px;
+    }
+
+    .footer-main {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .footer-logo {
+        width: 300px;
+    }
+
+    .footer-description {
+        margin-top: 28px;
+        max-width: 480px;
+    }
+
+    .footer-bottom {
+        margin-top: 60px;
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .footer {
+        padding: 45px 20px 32px;
+    }
+
+    .footer-logo {
+        width: 250px;
+    }
+
+    .footer-description {
+        font-size: 14px;
+    }
+
+    .footer-contact {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .footer-contact-label {
+        font-size: 18px;
+    }
+
+    .footer-contact-value {
+        font-size: 14px;
+    }
+
+    .footer-nav h3 {
+        font-size: 20px;
+    }
+
+    .footer-nav a {
+        font-size: 15px;
+    }
+
+    .footer-bottom {
+        margin-top: 45px;
+        padding-top: 24px;
+        font-size: 12px;
+    }
+}

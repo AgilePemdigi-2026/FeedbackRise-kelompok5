@@ -15,7 +15,8 @@
 
         <header class="navbar">
 
-            <div class="brand">
+            <!-- Logo (nama FEEDBACKRISE sudah ada di gambar logo) -->
+            <a href="{{ url('/home') }}" class="brand">
 
                 <img
                     src="{{ asset('images/logo-feedbackrise.png') }}"
@@ -23,11 +24,7 @@
                     class="logo"
                 >
 
-                <span class="brand-name">
-                    FEEDBACKRISE
-                </span>
-
-            </div>
+            </a>
 
             <nav class="navigation">
 
@@ -262,7 +259,243 @@
 
             </section>
 
+
+            <!-- Our Features Section -->
+            <section class="features">
+
+                <div class="features-inner">
+
+                    <div class="features-header">
+
+                        <h2 class="features-title">
+                            OUR <span>FEATURES</span>
+                        </h2>
+
+                        <p class="features-subtitle">
+                            Everything you need to turn customer feedback
+                            into clear insights and actionable improvements.
+                        </p>
+
+                    </div>
+
+
+                    <div class="features-grid">
+
+                        <!-- Smart Issue Grouping -->
+                        <article class="feature-card feature-card--grouping">
+
+                            <h3>Smart Issue Grouping</h3>
+
+                            <p>
+                                Groups similar feedback into relevant
+                                issue categories for easier analysis.
+                            </p>
+
+                        </article>
+
+
+                        <!-- Priority Detection -->
+                        <article class="feature-card feature-card--priority">
+
+                            <h3>Priority Detection</h3>
+
+                            <p>
+                                Determines the most important issues based
+                                on frequency, severity, trend, and impact.
+                            </p>
+
+                        </article>
+
+
+                        <!-- Actionable Recommendations -->
+                        <article class="feature-card feature-card--actions">
+
+                            <h3>Actionable Recommendations</h3>
+
+                            <p>
+                                Provides suggested actions to help developers
+                                address high-priority issues.
+                            </p>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- How It Works Section -->
+            <section class="features how-it-works">
+
+                <div class="features-inner">
+
+                    <div class="features-header">
+
+                        <h2 class="features-title">
+                            HOW IT <span>WORKS</span>
+                        </h2>
+
+                        <p class="features-subtitle">
+                            See how customer feedback is transformed into
+                            clear insights and actionable recommendations
+                            in just a few simple steps.
+                        </p>
+
+                    </div>
+
+
+                    <div class="features-grid">
+
+                        <!-- Step 1 -->
+                        <article class="how-card how-card--input">
+
+                            <h3>Input Customer Feedback</h3>
+
+                            <p>
+                                Upload or enter customer reviews,
+                                complaints, or requests.
+                            </p>
+
+                        </article>
+
+
+                        <!-- Step 2 -->
+                        <article class="how-card how-card--analyze">
+
+                            <h3>Analyze and Prioritize</h3>
+
+                            <p>
+                                Groups similar feedback and
+                                identifies issue priorities.
+                            </p>
+
+                        </article>
+
+
+                        <!-- Step 3 -->
+                        <article class="how-card how-card--insights">
+
+                            <h3>Get Insights and Recommendations</h3>
+
+                            <p>
+                                View key issues, priorities, and
+                                recommended actions.
+                            </p>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </section>
+
         </main>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+
+            <div class="footer-inner">
+
+                <div class="footer-main">
+
+                    <!-- Logo dan deskripsi -->
+                    <div class="footer-brand">
+
+                        <img
+                            src="{{ asset('images/logo-footer.png') }}"
+                            alt="FeedbackRise"
+                            class="footer-logo"
+                        >
+
+                        <p class="footer-description">
+                            AI-powered platform that analyzes customer
+                            feedback, identifies key issues, prioritizes
+                            them, and provides actionable recommendations
+                            for developers.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Kontak dan navigasi -->
+                    <div class="footer-info">
+
+                        <div class="footer-contact">
+
+                            <div class="footer-contact-item">
+
+                                <img
+                                    src="{{ asset('images/icon-telf.png') }}"
+                                    alt=""
+                                    class="footer-contact-icon"
+                                >
+
+                                <div class="footer-contact-text">
+                                    <span class="footer-contact-label">Phone</span>
+
+                                    <a
+                                        href="tel:+6281203749284"
+                                        class="footer-contact-value"
+                                    >
+                                        +62 81203749284
+                                    </a>
+                                </div>
+
+                            </div>
+
+                            <div class="footer-contact-item">
+
+                                <img
+                                    src="{{ asset('images/icon-email.png') }}"
+                                    alt=""
+                                    class="footer-contact-icon"
+                                >
+
+                                <div class="footer-contact-text">
+                                    <span class="footer-contact-label">Email</span>
+
+                                    <a
+                                        href="mailto:FeedbackRise@gmail.com"
+                                        class="footer-contact-value"
+                                    >
+                                        FeedbackRise@gmail.com
+                                    </a>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <nav class="footer-nav">
+
+                            <h3>Navigation</h3>
+
+                            <ul>
+                                <li><a href="{{ url('/home') }}">Home</a></li>
+                                <li><a href="#">History</a></li>
+                            </ul>
+
+                        </nav>
+
+                    </div>
+
+                </div>
+
+
+                <div class="footer-bottom">
+                    &copy; {{ date('Y') }} FeedbackRise
+                    <span class="footer-dot">&bull;</span>
+                    All Rights Reserved
+                </div>
+
+            </div>
+
+        </footer>
 
     </div>
 
