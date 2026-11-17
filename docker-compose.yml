@@ -3,9 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: feedbackrise-app
-    ports:
-      - "8000:80"
+    expose:
+      - "80"
     env_file:
       - .env
     extra_hosts:
