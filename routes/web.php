@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,7 @@ Route::get('/forgot-password', function () {
 Route::get('/home', function () {
     return view('page.home');
 })->name('home');
+
+Route::get('/analysis', function () {
+    return view('page.analysis');
+})->name('analysis');

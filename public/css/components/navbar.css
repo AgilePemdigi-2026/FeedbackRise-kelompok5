@@ -1,0 +1,271 @@
+
+/* =====================================
+   SHARED NAVBAR
+   Digunakan oleh Home, Analysis, History
+===================================== */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 85px;
+    min-height: 85px;
+    padding: 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #ffffff;
+    z-index: 1000;
+}
+
+
+/* =====================================
+   BRAND / LOGO
+===================================== */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.logo {
+    width: 160px;
+    height: 65px;
+
+    display: block;
+    object-fit: contain;
+}
+
+
+/* =====================================
+   NAVIGATION
+===================================== */
+
+.navigation {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 34px;
+
+    color: #111111;
+    font-size: 14px;
+    font-weight: 400;
+
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.nav-link.active {
+    min-width: 80px;
+    padding: 0 17px;
+
+    background: #9bb1f3;
+    border-radius: 20px;
+}
+
+
+/* =====================================
+   PROFILE
+===================================== */
+
+.profile-container {
+    position: relative;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.profile-button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #111111;
+    background: transparent;
+
+    cursor: pointer;
+}
+
+.profile-button svg {
+    width: 27px;
+    height: 27px;
+}
+
+
+/* =====================================
+   PROFILE DROPDOWN
+===================================== */
+
+.profile-menu {
+    position: absolute;
+    top: 37px;
+    right: 0;
+
+    width: 125px;
+    padding: 6px;
+
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 9px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-5px);
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease,
+        transform 0.2s ease;
+
+    z-index: 1100;
+}
+
+.profile-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.profile-menu button {
+    width: 100%;
+    padding: 8px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #111111;
+    background: transparent;
+    border-radius: 6px;
+
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.profile-menu button:hover {
+    background: #f4f4f4;
+}
+
+
+/* =====================================
+   STICKY SUPPORT
+===================================== */
+
+.page {
+    overflow-x: clip;
+}
+
+
+/* =====================================
+   RESPONSIVE - TABLET
+===================================== */
+
+@media (max-width: 800px) {
+
+    .navbar {
+        height: 80px;
+        min-height: 80px;
+        padding: 0 30px;
+    }
+
+    .logo {
+        width: 145px;
+        height: 58px;
+    }
+
+    .navigation {
+        top: 50%;
+        gap: 24px;
+    }
+
+}
+
+
+/* =====================================
+   RESPONSIVE - MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        height: 75px;
+        min-height: 75px;
+        padding: 0 20px;
+    }
+
+    .logo {
+        width: 120px;
+        height: 48px;
+    }
+
+    .navigation {
+        top: 50%;
+        gap: 16px;
+    }
+
+    .nav-link {
+        font-size: 12px;
+    }
+
+    .nav-link.active {
+        min-width: 60px;
+        padding: 0 12px;
+    }
+
+    .profile-button {
+        width: 27px;
+        height: 27px;
+    }
+
+    .profile-button svg {
+        width: 24px;
+        height: 24px;
+    }
+
+}
+
+
+/* =====================================
+   RESPONSIVE - SMALL MOBILE
+===================================== */
+
+@media (max-width: 400px) {
+
+    .navbar {
+        padding: 0 16px;
+    }
+
+    .logo {
+        width: 100px;
+        height: 42px;
+    }
+
+    .navigation {
+        gap: 12px;
+    }
+
+}

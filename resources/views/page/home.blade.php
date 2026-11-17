@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,121 +8,17 @@
     <title>FeedbackRise - Home</title>
 
     <link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ time() }}">
+
+    <!-- Shared Navbar CSS -->
+    <link rel="stylesheet" href="{{ asset('css/components/navbar.css') }}?v={{ time() }}">
 </head>
 
 <body>
 
     <div class="page">
 
-        <header class="navbar">
-
-            <!-- Logo (nama FEEDBACKRISE sudah ada di gambar logo) -->
-            <a href="{{ url('/home') }}" class="brand">
-
-                <img
-                    src="{{ asset('images/logo-feedbackrise.png') }}"
-                    alt="FeedbackRise"
-                    class="logo"
-                >
-
-            </a>
-
-            <nav class="navigation">
-
-                <a
-                    href="#"
-                    class="nav-link active"
-                >
-                    Home
-                </a>
-
-                <a
-                    href="#"
-                    class="nav-link"
-                >
-                    History
-                </a>
-
-            </nav>
-
-            <div class="profile-container">
-
-                <button
-                    type="button"
-                    class="profile-button"
-                    id="profileButton"
-                    aria-label="Profile"
-                >
-                    <svg
-                        width="27"
-                        height="27"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <circle
-                            cx="12"
-                            cy="8"
-                            r="4"
-                            stroke="currentColor"
-                            stroke-width="1.6"
-                        />
-
-                        <path
-                            d="M4.5 21C4.5 16.8 7.5 14 12 14C16.5 14 19.5 16.8 19.5 21"
-                            stroke="currentColor"
-                            stroke-width="1.6"
-                            stroke-linecap="round"
-                        />
-                    </svg>
-                </button>
-
-                <div
-                    class="profile-menu"
-                    id="profileMenu"
-                >
-                    <button
-                        type="button"
-                        id="logoutButton"
-                    >
-                        <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M9 5H5C4.44772 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H9"
-                                stroke="currentColor"
-                                stroke-width="1.7"
-                                stroke-linecap="round"
-                            />
-
-                            <path
-                                d="M13 8L17 12L13 16"
-                                stroke="currentColor"
-                                stroke-width="1.7"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-
-                            <path
-                                d="M17 12H9"
-                                stroke="currentColor"
-                                stroke-width="1.7"
-                                stroke-linecap="round"
-                            />
-                        </svg>
-
-                        <span>Logout</span>
-                    </button>
-                </div>
-
-            </div>
-
-        </header>
-
+        <!-- Shared Navbar -->
+        @include('components.navbar', ['active' => 'home'])
 
         <main>
 
@@ -182,39 +79,72 @@
                     </button>
 
                 </form>
+
+                <!-- Analysis Controls -->
                 <div class="analysis-controls">
-                    <label for="issueLimit">Batas issue
-                        <input type="number" id="issueLimit" name="max_issues" form="issueForm"
-                            min="1" max="{{ config('services.github.max_issues', 500) }}"
+
+                    <label for="issueLimit">
+                        Batas issue
+
+                        <input
+                            type="number"
+                            id="issueLimit"
+                            name="max_issues"
+                            form="issueForm"
+                            min="1"
+                            max="{{ config('services.github.max_issues', 500) }}"
                             value="{{ min(config('services.github.max_issues', 500), max(1, config('services.github.default_limit', 20))) }}"
-                            required>
+                            required
+                        >
                     </label>
-                    <label for="issueState">Status
-                        <select id="issueState" name="state" form="issueForm">
-                            <option value="open" @selected(config('services.github.state', 'open') === 'open')>Open</option>
-                            <option value="closed" @selected(config('services.github.state') === 'closed')>Closed</option>
-                            <option value="all" @selected(config('services.github.state') === 'all')>Open + Closed</option>
+
+                    <label for="issueState">
+                        Status
+
+                        <select
+                            id="issueState"
+                            name="state"
+                            form="issueForm"
+                        >
+                            <option
+                                value="open"
+                                @selected(config('services.github.state', 'open') === 'open')
+                            >
+                                Open
+                            </option>
+
+                            <option
+                                value="closed"
+                                @selected(config('services.github.state', 'open') === 'closed')
+                            >
+                                Closed
+                            </option>
+
+                            <option
+                                value="all"
+                                @selected(config('services.github.state', 'open') === 'all')
+                            >
+                                Open + Closed
+                            </option>
                         </select>
                     </label>
+
                 </div>
-                <p id="analysisStatus" class="analysis-status" role="status" aria-live="polite"></p>
 
+                <!-- Analysis Status -->
+                <p
+                    id="analysisStatus"
+                    class="analysis-status"
+                    role="status"
+                    aria-live="polite"
+                ></p>
 
             </section>
 
-
-            <section class="analysis-results" id="analysisResults" aria-labelledby="analysisHeading" hidden>
-                <h2 id="analysisHeading">Rekomendasi pengembangan</h2>
-                <p id="analysisMeta" class="analysis-meta"></p>
-                <p id="analysisSummary" class="analysis-summary"></p>
-                <div id="recommendationList" class="recommendation-list"></div>
-                <p id="analysisNote" class="analysis-note"></p>
-            </section>
 
             <!-- FeedbackRise Introduction Section -->
             <section class="feedbackrise-intro">
 
-                <!-- Center Heading -->
                 <div class="feedbackrise-intro-heading">
 
                     <h2>
@@ -224,16 +154,12 @@
 
                 </div>
 
-
-                <!-- Content -->
                 <div class="feedbackrise-intro-content">
 
                     <!-- Text -->
                     <div class="feedbackrise-intro-text">
 
-                        <h1>
-                            FEEDBACKRISE
-                        </h1>
+                        <h1>FEEDBACKRISE</h1>
 
                         <p>
                             FEEDBACKRISE is a platform where customer feedback is
@@ -243,7 +169,6 @@
                         </p>
 
                     </div>
-
 
                     <!-- Illustration -->
                     <div class="feedbackrise-intro-image">
@@ -278,7 +203,6 @@
 
                     </div>
 
-
                     <div class="features-grid">
 
                         <!-- Smart Issue Grouping -->
@@ -293,7 +217,6 @@
 
                         </article>
 
-
                         <!-- Priority Detection -->
                         <article class="feature-card feature-card--priority">
 
@@ -305,7 +228,6 @@
                             </p>
 
                         </article>
-
 
                         <!-- Actionable Recommendations -->
                         <article class="feature-card feature-card--actions">
@@ -345,7 +267,6 @@
 
                     </div>
 
-
                     <div class="features-grid">
 
                         <!-- Step 1 -->
@@ -360,7 +281,6 @@
 
                         </article>
 
-
                         <!-- Step 2 -->
                         <article class="how-card how-card--analyze">
 
@@ -372,7 +292,6 @@
                             </p>
 
                         </article>
-
 
                         <!-- Step 3 -->
                         <article class="how-card how-card--insights">
@@ -402,7 +321,7 @@
 
                 <div class="footer-main">
 
-                    <!-- Logo dan deskripsi -->
+                    <!-- Logo and Description -->
                     <div class="footer-brand">
 
                         <img
@@ -421,7 +340,7 @@
                     </div>
 
 
-                    <!-- Kontak dan navigasi -->
+                    <!-- Contact and Navigation -->
                     <div class="footer-info">
 
                         <div class="footer-contact">
@@ -435,7 +354,10 @@
                                 >
 
                                 <div class="footer-contact-text">
-                                    <span class="footer-contact-label">Phone</span>
+
+                                    <span class="footer-contact-label">
+                                        Phone
+                                    </span>
 
                                     <a
                                         href="tel:+6281203749284"
@@ -443,9 +365,11 @@
                                     >
                                         +62 81203749284
                                     </a>
+
                                 </div>
 
                             </div>
+
 
                             <div class="footer-contact-item">
 
@@ -456,7 +380,10 @@
                                 >
 
                                 <div class="footer-contact-text">
-                                    <span class="footer-contact-label">Email</span>
+
+                                    <span class="footer-contact-label">
+                                        Email
+                                    </span>
 
                                     <a
                                         href="mailto:FeedbackRise@gmail.com"
@@ -464,6 +391,7 @@
                                     >
                                         FeedbackRise@gmail.com
                                     </a>
+
                                 </div>
 
                             </div>
@@ -476,8 +404,13 @@
                             <h3>Navigation</h3>
 
                             <ul>
-                                <li><a href="{{ url('/home') }}">Home</a></li>
-                                <li><a href="#">History</a></li>
+                                <li>
+                                    <a href="{{ url('/home') }}">Home</a>
+                                </li>
+
+                                <li>
+                                    <a href="{{ url('/history') }}">History</a>
+                                </li>
                             </ul>
 
                         </nav>
@@ -488,9 +421,13 @@
 
 
                 <div class="footer-bottom">
+
                     &copy; {{ date('Y') }} FeedbackRise
+
                     <span class="footer-dot">&bull;</span>
+
                     All Rights Reserved
+
                 </div>
 
             </div>
@@ -500,7 +437,17 @@
     </div>
 
 
-    <script src="{{ asset('js/page/home.js') }}?v={{ time() }}"></script>
+    <!-- Shared Navbar JavaScript -->
+    <script
+        src="{{ asset('js/components/navbar.js') }}?v={{ time() }}"
+        defer
+    ></script>
+
+    <!-- Home JavaScript -->
+    <script
+        src="{{ asset('js/page/home.js') }}?v={{ time() }}"
+        defer
+    ></script>
 
 </body>
 </html>
