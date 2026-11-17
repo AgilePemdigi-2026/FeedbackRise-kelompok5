@@ -1,10 +1,10 @@
-FROM php:8.0-apache
+
+FROM php:8.4-apache
 
 WORKDIR /var/www/html
 
-RUN sed -i 's/deb.debian.org\/debian-security/archive.debian.org\/debian-security/g' /etc/apt/sources.list \
-    && apt-get update -o Acquire::Check-Valid-Until=false \
-    && apt-get install -y \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
     git \
     unzip \
     libzip-dev \
