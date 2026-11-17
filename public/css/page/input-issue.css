@@ -1,0 +1,569 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #111111;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+button {
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Page */
+
+.page {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Navbar */
+
+.navbar {
+    position: relative;
+
+    width: 100%;
+    height: 130px;
+
+    padding: 0 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #ffffff;
+
+    z-index: 20;
+}
+
+/* Brand */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    flex-shrink: 0;
+}
+
+.logo {
+    width: 28px;
+    height: 34px;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+.brand-name {
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 20px;
+    font-weight: 800;
+
+    letter-spacing: -0.8px;
+    line-height: 1;
+
+    color: #000000;
+
+    white-space: nowrap;
+}
+
+/* Navigation */
+
+.navigation {
+    position: absolute;
+
+    left: 50%;
+    top: 32px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+
+    gap: 35px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 34px;
+
+    padding: 0;
+
+    color: #111111;
+
+    font-size: 16px;
+    font-weight: 400;
+
+    white-space: nowrap;
+}
+
+.nav-link.active {
+    min-width: 80px;
+
+    padding: 0 18px;
+
+    background: #9bb1f3;
+
+    border-radius: 20px;
+}
+
+/* Profile */
+
+.profile-container {
+    position: relative;
+
+    margin-left: auto;
+
+    flex-shrink: 0;
+}
+
+.profile-button {
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #111111;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+.profile-button svg {
+    width: 27px;
+    height: 27px;
+}
+
+/* Profile Dropdown */
+
+.profile-menu {
+    position: absolute;
+
+    top: 40px;
+    right: 0;
+
+    width: 125px;
+
+    padding: 6px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 9px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-5px);
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease,
+        transform 0.2s ease;
+
+    z-index: 100;
+}
+
+.profile-menu.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+.profile-menu button {
+    width: 100%;
+
+    padding: 8px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #111111;
+
+    background: transparent;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.profile-menu button:hover {
+    background: #f4f4f4;
+}
+
+/* Hero */
+
+.hero {
+    position: relative;
+
+    width: 100%;
+    height: 280px;
+
+    padding-top: 38px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background: transparent;
+
+    z-index: 5;
+}
+
+/* Yellow Background */
+
+.hero::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 235px;
+
+    background: #f8e36c;
+
+    z-index: -1;
+
+    clip-path: polygon(
+        0 0,
+        12% 1%,
+        28% 3%,
+        45% 5%,
+        63% 7%,
+        82% 9%,
+        94% 12%,
+        99% 16%,
+        100% 22%,
+        100% 78%,
+        99% 84%,
+        95% 88%,
+        88% 91%,
+        0 91%
+    );
+}
+
+/* Heading */
+
+.hero h1 {
+    position: relative;
+
+    margin: 0;
+
+    color: #000000;
+
+    font-size: 42px;
+    line-height: 1.15;
+
+    font-weight: 400;
+
+    text-align: center;
+
+    z-index: 2;
+}
+
+/* Issue Form */
+
+.issue-form {
+    position: absolute;
+
+    left: 50%;
+
+    /*
+     * Hero dimulai setelah navbar.
+     * Form ditempatkan di bawah judul
+     * dan keluar sedikit dari area kuning.
+     */
+    top: 245px;
+
+    transform: translateX(-50%);
+
+    width: 760px;
+    max-width: calc(100% - 80px);
+
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+
+    background: #f8dddd;
+
+    border-radius: 32px;
+
+    overflow: hidden;
+
+    z-index: 50;
+}
+
+/* Input */
+
+.issue-form input {
+    flex: 1;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0 28px;
+
+    border: 0;
+    outline: none;
+
+    background: transparent;
+
+    color: #333333;
+
+    font-size: 14px;
+}
+
+.issue-form input::placeholder {
+    color: #333333;
+
+    opacity: 1;
+}
+
+/* Submit Button */
+
+.submit-button {
+    width: 48px;
+    height: 48px;
+
+    margin-right: 5px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #3048a9;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    transition: transform 0.15s ease;
+}
+
+.submit-button:hover {
+    transform: scale(1.03);
+}
+
+.submit-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Tablet */
+
+@media (max-width: 800px) {
+
+    .navbar {
+        height: 110px;
+
+        padding: 0 30px;
+    }
+
+    .logo {
+        width: 30px;
+        height: 36px;
+    }
+
+    .brand-name {
+        font-size: 18px;
+    }
+
+    .navigation {
+        top: 27px;
+
+        gap: 24px;
+    }
+
+    .hero {
+        height: 260px;
+
+        padding-top: 32px;
+    }
+
+    .hero::before {
+        height: 220px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .issue-form {
+        top: 220px;
+
+        width: 70%;
+        max-width: none;
+
+        height: 54px;
+    }
+
+    .submit-button {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        height: 85px;
+
+        padding: 0 20px;
+    }
+
+    .logo {
+        width: 27px;
+        height: 31px;
+    }
+
+    .brand {
+        gap: 8px;
+    }
+
+    .brand-name {
+        font-size: 14px;
+
+        letter-spacing: -0.4px;
+    }
+
+    .navigation {
+        top: 28px;
+
+        gap: 16px;
+    }
+
+    .nav-link {
+        font-size: 12px;
+    }
+
+    .nav-link.active {
+        min-width: 60px;
+
+        padding: 0 12px;
+    }
+
+    .profile-button {
+        width: 27px;
+        height: 27px;
+    }
+
+    .profile-button svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .hero {
+        height: 230px;
+
+        padding-top: 30px;
+    }
+
+    .hero::before {
+        height: 205px;
+    }
+
+    .hero h1 {
+        font-size: 29px;
+
+        line-height: 1.15;
+    }
+
+    .issue-form {
+        top: 190px;
+
+        width: 80%;
+
+        height: 48px;
+    }
+
+    .issue-form input {
+        padding: 0 17px;
+
+        font-size: 11px;
+    }
+
+    .submit-button {
+        width: 40px;
+        height: 40px;
+
+        margin-right: 4px;
+    }
+
+    .submit-button svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* Small Mobile */
+
+@media (max-width: 400px) {
+
+    .brand-name {
+        font-size: 12px;
+    }
+
+    .navigation {
+        gap: 12px;
+    }
+
+    .hero h1 {
+        font-size: 26px;
+    }
+
+    .issue-form {
+        width: 88%;
+
+        top: 185px;
+    }
+}

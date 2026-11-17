@@ -1,0 +1,309 @@
+
+/* =====================================
+   GENERAL
+===================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+.page {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: clip;
+}
+
+.analysis-page {
+    width: min(1100px, calc(100% - 60px));
+    margin: 0 auto;
+    padding: 30px 0 65px;
+}
+
+.analysis-title {
+    margin: 0 0 25px;
+    color: #111;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.analysis-status {
+    margin: 15px 0;
+    color: #3048a9;
+    font-size: 14px;
+}
+
+.analysis-status.is-error {
+    color: #b42318;
+}
+
+
+/* =====================================
+   OVERVIEW
+===================================== */
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: 0.75fr 1.65fr;
+    gap: 18px;
+    align-items: stretch;
+}
+
+.overview-card {
+    min-width: 0;
+    padding: 22px;
+    background: #fcefed;
+    border-radius: 20px;
+}
+
+.overview-card h2 {
+    margin: 0 0 14px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+}
+
+.priority-overview {
+    min-height: 390px;
+}
+
+.top-issue-box {
+    padding: 15px;
+    background: #f7b4a9;
+    border-radius: 12px;
+}
+
+.top-issue-box h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.top-issue-box p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.feedback-total {
+    margin-top: 22px;
+}
+
+.feedback-total h3 {
+    margin: 0 0 5px;
+    font-size: 15px;
+}
+
+.feedback-total p {
+    margin: 0;
+    color: #555;
+    font-size: 13px;
+}
+
+
+/* =====================================
+   TOP 3 RECOMMENDATIONS
+===================================== */
+
+.recommendations-overview {
+    min-height: 390px;
+}
+
+.top-recommendations {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.top-recommendation-card {
+    position: relative;
+    padding: 17px;
+    background: #f8d0c9;
+    border-radius: 14px;
+}
+
+.top-recommendation-card h3 {
+    margin: 0 80px 8px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.top-recommendation-card p {
+    margin: 6px 0;
+    color: #333;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.priority-badge {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    padding: 4px 9px;
+    background: #4055c7;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.recommendation-label {
+    margin-top: 12px !important;
+    font-weight: 700;
+}
+
+.top-recommendation-card ol {
+    margin: 5px 0 0;
+    padding-left: 18px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* =====================================
+   DETAIL TABLE
+===================================== */
+
+.detail-section {
+    margin-top: 38px;
+}
+
+.detail-section h2 {
+    margin: 0 0 17px;
+    font-size: 23px;
+    color: #111;
+}
+
+.detail-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    padding: 18px;
+    background: #fcefed;
+    border-radius: 18px;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.detail-table th {
+    padding: 12px 13px;
+    border-bottom: 1px solid #d9bdb8;
+    color: #222;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.detail-table td {
+    padding: 14px 13px;
+    vertical-align: top;
+    color: #333;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.detail-table th:first-child,
+.detail-table td:first-child {
+    width: 25%;
+}
+
+.detail-table th:nth-child(2),
+.detail-table td:nth-child(2) {
+    width: 38%;
+}
+
+.detail-table th:last-child,
+.detail-table td:last-child {
+    width: 37%;
+}
+
+
+/* =====================================
+   EMPTY STATE
+===================================== */
+
+.analysis-empty {
+    padding: 30px;
+    text-align: center;
+    background: #fcefed;
+    border-radius: 15px;
+}
+
+.analysis-empty p {
+    color: #333;
+    font-size: 14px;
+}
+
+.back-button {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 11px 18px;
+    background: #4055c7;
+    color: #ffffff;
+    border-radius: 9px;
+    text-decoration: none;
+}
+
+
+/* =====================================
+   RESPONSIVE - TABLET
+===================================== */
+
+@media (max-width: 800px) {
+
+    .overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .priority-overview,
+    .recommendations-overview {
+        min-height: auto;
+    }
+}
+
+
+/* =====================================
+   RESPONSIVE - MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
+    .analysis-page {
+        width: calc(100% - 28px);
+        padding: 30px 0 45px;
+    }
+
+    .analysis-title {
+        font-size: 22px;
+    }
+
+    .overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .overview-card {
+        padding: 17px;
+    }
+
+    .detail-section h2 {
+        font-size: 20px;
+    }
+
+    .detail-table {
+        min-width: 650px;
+    }
+}
+
+
+/* =====================================
+   RESPONSIVE - SMALL MOBILE
+===================================== */
+
+@media (max-width: 400px) {
+
+    .analysis-title {
+        font-size: 20px;
+    }
+}
