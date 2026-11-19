@@ -38,9 +38,11 @@ When('User enters an invalid email format', async function () {
     await page.locator('#email').fill('usergmail.com');
 });
 
-When('User presses the "Send Email" button', async function () {
+
+When('User clicks the Send Email button', async function () {
     await page.getByRole('button', { name: 'Send Email' }).click();
 });
+
 
 When('Firebase encounters an error while sending the reset email', async function () {
     await page.route('**/identitytoolkit.googleapis.com/**', async route => {

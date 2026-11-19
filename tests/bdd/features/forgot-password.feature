@@ -8,21 +8,21 @@ Feature: Forgot Password
   Scenario: Successfully request password reset
     Given User is on the Forgot Password page at "/forgot-password"
     When User enters a registered email
-    And User presses the "Send Email" button
+    And User clicks the Send Email button
     Then System should send a password reset email through Firebase
     And User should see a password reset confirmation message
 
   Scenario: Submit an empty email
     Given User is on the Forgot Password page at "/forgot-password"
     When User leaves the email field empty
-    And User presses the "Send Email" button
+    And User clicks the Send Email button
     Then System should prevent the form submission
     And User should see an email validation message
 
   Scenario: Submit an invalid email format
     Given User is on the Forgot Password page at "/forgot-password"
     When User enters an invalid email format
-    And User presses the "Send Email" button
+    And User clicks the Send Email button
     Then System should prevent the form submission
     And User should see an email validation message
 

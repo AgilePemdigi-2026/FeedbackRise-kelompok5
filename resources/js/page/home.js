@@ -1,4 +1,4 @@
-
+import { auth } from '../firebase';
 document.addEventListener('DOMContentLoaded', function () {
 
     // Ambil elemen form
@@ -79,6 +79,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
 
+            // Ambil user yang sedang login
+            const currentUser = auth.currentUser;
+
+            if (!currentUser) {
+            throw new Error(
+            'Session pengguna tidak ditemukan. Silakan login kembali.'
+            );
+            }
+
+            // Ambil Firebase ID Token
+            const idToken = await currentUser.getIdToken();
+
             // Mengirim permintaan analisis ke Laravel API
             const response = await fetch('/api/github/issues', {
 
@@ -88,7 +100,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     'Content-Type': 'application/json',
 
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+
+                    'Authorization': `Bearer ${idToken}`
 
                 },
 

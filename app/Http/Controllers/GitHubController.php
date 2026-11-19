@@ -10,6 +10,13 @@ class GitHubController extends Controller
 {
     public function getIssues(Request $request)
     {
+        $firebaseToken = $request->bearerToken();
+
+            if (!$firebaseToken) {
+                return response()->json([
+                    'message' => 'Token autentikasi tidak ditemukan. Silakan login kembali.'
+                ], 401);
+            }
         $maximum = config('services.github.max_issues', 500);
         $request->validate([
             'issue_url' => ['required', 'url'],
@@ -98,7 +105,11 @@ class GitHubController extends Controller
         }
 
         try {
-            $aiResponse = Http::acceptJson()->connectTimeout(5)->timeout($timeout)->post(
+            $aiResponse = Http::withToken($firebaseToken)
+            ->acceptJson()
+            ->connectTimeout(5)
+            ->timeout($timeout)
+            ->post(
                 rtrim(config('services.ai.url'), '/') . '/analyze',
                 ['issues' => $issues->values()->all()]
             );

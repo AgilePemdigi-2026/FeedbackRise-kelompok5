@@ -162,14 +162,8 @@ When('User enters the email', async function () {
     await page.locator('#email').fill('test1@example.com');
 });
 
-When('User presses the {string} button', async function (buttonName) {
-    if (buttonName === 'Login') {
-        await page.locator('#login-button').click();
-    }
-
-    if (buttonName === 'Submit') {
-        await page.getByRole('button', { name: 'Send Email' }).click();
-    }
+When('User presses the "Login" button', async function () {
+    await page.locator('#login-button').click();
 });
 
 Then("System should verify the user's email", async function () {

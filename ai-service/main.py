@@ -4,16 +4,21 @@ import logging
 import os
 import time
 from pathlib import Path
+import math
+
 
 import numpy as np
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from google import genai
 from google.genai import errors, types
 from pydantic import BaseModel, Field, ValidationError
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import silhouette_score
+
+from firebase_config import db
+from firebase_admin import firestore, auth
 
 
 # =========================================================
@@ -57,6 +62,34 @@ class IssueRequest(BaseModel):
         max_length=MAX_ISSUES
     )
 
+def make_firestore_safe(data):
+    if isinstance(data, BaseModel):
+        return data.model_dump(mode="json")
+
+    if isinstance(data, dict):
+        return {
+            str(key): make_firestore_safe(value)
+            for key, value in data.items()
+        }
+
+    if isinstance(data, (list, tuple)):
+        return [
+            make_firestore_safe(value)
+            for value in data
+        ]
+
+    # Menangani tipe data NumPy
+    if hasattr(data, "tolist"):
+        return make_firestore_safe(data.tolist())
+
+    if hasattr(data, "item"):
+        return make_firestore_safe(data.item())
+
+    # Firestore tidak menerima NaN dan Infinity
+    if isinstance(data, float) and not math.isfinite(data):
+        return None
+
+    return data
 
 class ThemeAnalysis(BaseModel):
     cluster: int
@@ -580,9 +613,42 @@ def root():
 # =========================================================
 
 @app.post("/analyze")
-def analyze(request: IssueRequest):
+def analyze(
+    request: IssueRequest,
+    authorization: str | None = Header(default=None)
+):
 
     started = time.monotonic()
+
+    # Memeriksa Firebase ID Token
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Firebase ID Token tidak ditemukan."
+        )
+
+    id_token = authorization.split(" ", 1)[1].strip()
+
+    if not id_token:
+        raise HTTPException(
+            status_code=401,
+            detail="Firebase ID Token kosong."
+        )
+
+    # Memverifikasi token dan mengambil UID pengguna
+    try:
+        decoded_token = auth.verify_id_token(id_token)
+        user_id = decoded_token["uid"]
+
+    except Exception:
+        logger.warning(
+            "Firebase ID Token invalid atau expired."
+        )
+
+        raise HTTPException(
+            status_code=401,
+            detail="Token autentikasi tidak valid atau kedaluwarsa. Silakan login kembali."
+        )
 
     issues = prepare_issues(
         request.issues
@@ -677,8 +743,78 @@ def analyze(request: IssueRequest):
 
         })
 
+        # Menyimpan hasil analisis ke Firestore
+    analysis_data = {
+    "user_id": user_id,
+
+    "input_issues": make_firestore_safe(
+        request.issues
+    ),
+
+        "total_issues": len(issues),
+
+        "overall_summary": output.overall_summary,
+
+        "recommendations": make_firestore_safe(
+            recommendations
+        ),
+
+        "total_groups": len(groups),
+
+        "clustering": make_firestore_safe(
+            clustering
+        ),
+
+        "method": "TF-IDF + K-Means",
+
+        "generation_model": GENERATION_MODEL,
+
+        "usage": make_firestore_safe({
+            **usage,
+            "generation_requests": 1
+        }),
+
+        "text_truncated_count": sum(
+            issue["text_truncated"]
+            for issue in issues
+        ),
+
+        "created_at": firestore.SERVER_TIMESTAMP
+    }
+
+    try:
+        # Membuat document ID otomatis
+        analysis_ref = db.collection(
+            "analyses"
+        ).document()
+
+        # Menyimpan data
+        analysis_ref.set(analysis_data)
+
+        analysis_id = analysis_ref.id
+
+        logger.info(
+            "Analysis saved to Firestore: %s",
+            analysis_id
+        )
+
+    except Exception as error:
+        logger.error(
+            "Failed to save analysis to Firestore: %s",
+            str(error)
+        )
+
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Analisis berhasil dilakukan, "
+                "tetapi gagal menyimpan hasil ke database."
+            )
+        ) 
+    
     # Response API
     return {
+        "analysis_id": analysis_id,
 
         "message": "Analisis issue berhasil dilakukan",
 
