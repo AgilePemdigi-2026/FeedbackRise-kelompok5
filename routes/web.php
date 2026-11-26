@@ -25,3 +25,7 @@ Route::get('/home', function () {
 Route::get('/analysis', function () {
     return view('page.analysis');
 })->name('analysis');
+
+Route::get('/history', function () {
+    return view('page.history');
+})->name('history');

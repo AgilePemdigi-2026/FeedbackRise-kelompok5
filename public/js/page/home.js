@@ -61124,10 +61124,55 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             throw new Error(data.message || data.detail || 'Analisis gagal. Silakan coba kembali.');
           case 12:
-            // Simpan hasil analisis ke sessionStorage
-            sessionStorage.setItem('feedbackriseAnalysis', JSON.stringify(data));
+            // =====================================
+            // SIMPAN HASIL ANALISIS KE HISTORY
+            // =====================================
+            const historyItem = {
+                id: data.analysis?.analysis_id || `analysis-${Date.now()}`,
+                title: data.repository || 'Feedback Analysis',
+                repository: data.repository || '',
+                createdAt: new Date().toISOString(),
+                data: data
+            };
+            
+            try {
+                const history = JSON.parse(
+                    localStorage.getItem('feedbackriseHistory') || '[]'
+                );
+                
+                // Hindari penyimpanan duplikat
+                const existingIndex = history.findIndex(
+                    item => item.id === historyItem.id
+                );
+                
+                if (existingIndex !== -1) {
+                    history.splice(existingIndex, 1);
+                }
+                
+                history.unshift(historyItem);
+                
+                localStorage.setItem(
+                    'feedbackriseHistory',
+                    JSON.stringify(history)
+                );
+                
+                console.log('History berhasil disimpan:', historyItem);
+            
+            } catch (error) {
+                console.error('Gagal menyimpan History:', error);
+            }
+            
+            // =====================================
+            // SIMPAN HASIL UNTUK HALAMAN ANALYSIS
+            // =====================================
+            
+            sessionStorage.setItem(
+                'feedbackriseAnalysis',
+                JSON.stringify(data)
+            );
+            
             console.log('Hasil analisis berhasil disimpan:', data);
-
+            
             // Pindah ke halaman Analysis
             window.location.assign('/analysis');
             _context.n = 14;

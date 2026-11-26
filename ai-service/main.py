@@ -55,12 +55,12 @@ class Issue(BaseModel):
     body: str | None = None
     url: str | None = None
 
-
 class IssueRequest(BaseModel):
     issues: list[Issue | str] = Field(
         min_length=1,
         max_length=MAX_ISSUES
     )
+    repository: str | None = None
 
 def make_firestore_safe(data):
     if isinstance(data, BaseModel):
@@ -857,3 +857,195 @@ def analyze(
             )
         )
     }
+
+
+# =========================================================
+# HISTORY ENDPOINTS
+# =========================================================
+
+def get_authenticated_user(authorization):
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Firebase ID Token tidak ditemukan."
+        )
+
+    id_token = authorization.split(" ", 1)[1].strip()
+
+    if not id_token:
+        raise HTTPException(
+            status_code=401,
+            detail="Firebase ID Token kosong."
+        )
+
+    try:
+        decoded_token = auth.verify_id_token(id_token)
+        return decoded_token["uid"]
+
+    except Exception:
+        logger.warning("Firebase ID Token tidak valid atau kedaluwarsa.")
+        raise HTTPException(
+            status_code=401,
+            detail="Token autentikasi tidak valid atau kedaluwarsa."
+        )
+
+
+def serialize_history_document(doc):
+    data = doc.to_dict() or {}
+
+    created_at = data.get("created_at")
+
+    if hasattr(created_at, "isoformat"):
+        created_at = created_at.isoformat()
+
+    repository = data.get("repository") or "Feedback Analysis"
+
+    analysis = {
+        "analysis_id": doc.id,
+        "overall_summary": data.get("overall_summary", ""),
+        "recommendations": data.get("recommendations", []),
+        "total_groups": data.get("total_groups", 0),
+        "clustering": data.get("clustering", {}),
+        "method": data.get("method", ""),
+        "generation_model": data.get("generation_model", ""),
+        "usage": data.get("usage", {}),
+        "text_truncated_count": data.get("text_truncated_count", 0),
+        "created_at": created_at
+    }
+
+    return {
+        "id": doc.id,
+        "title": repository,
+        "repository": repository,
+        "createdAt": created_at,
+        "data": {
+            "analysis_id": doc.id,
+            "repository": repository,
+            "total_issues": data.get("total_issues", 0),
+            "issues": data.get("input_issues", []),
+            "analysis": analysis
+        }
+    }
+
+
+@app.get("/history")
+def get_history(
+    authorization: str | None = Header(default=None)
+):
+    user_id = get_authenticated_user(authorization)
+
+    try:
+        documents = (
+            db.collection("analyses")
+            .where("user_id", "==", user_id)
+            .stream()
+        )
+
+        results = list(documents)
+
+        def get_timestamp(doc):
+            created_at = (doc.to_dict() or {}).get("created_at")
+
+            if hasattr(created_at, "timestamp"):
+                return created_at.timestamp()
+
+            return 0
+
+        results.sort(
+            key=get_timestamp,
+            reverse=True
+        )
+
+        return {
+            "history": [
+                serialize_history_document(doc)
+                for doc in results
+            ]
+        }
+
+    except Exception as error:
+        logger.error("Failed to load history: %s", str(error))
+        raise HTTPException(
+            status_code=500,
+            detail="Gagal mengambil histori analisis."
+        )
+
+
+@app.get("/history/{analysis_id}")
+def get_history_detail(
+    analysis_id: str,
+    authorization: str | None = Header(default=None)
+):
+    user_id = get_authenticated_user(authorization)
+
+    try:
+        doc = db.collection("analyses").document(analysis_id).get()
+
+        if not doc.exists:
+            raise HTTPException(
+                status_code=404,
+                detail="Histori tidak ditemukan."
+            )
+
+        data = doc.to_dict() or {}
+
+        if data.get("user_id") != user_id:
+            raise HTTPException(
+                status_code=404,
+                detail="Histori tidak ditemukan."
+            )
+
+        return serialize_history_document(doc)
+
+    except HTTPException:
+        raise
+
+    except Exception as error:
+        logger.error("Failed to load history detail: %s", str(error))
+        raise HTTPException(
+            status_code=500,
+            detail="Gagal mengambil detail histori."
+        )
+
+
+@app.delete("/history/{analysis_id}")
+def delete_history(
+    analysis_id: str,
+    authorization: str | None = Header(default=None)
+):
+    user_id = get_authenticated_user(authorization)
+
+    try:
+        doc_ref = db.collection("analyses").document(analysis_id)
+        doc = doc_ref.get()
+
+        if not doc.exists:
+            raise HTTPException(
+                status_code=404,
+                detail="Histori tidak ditemukan."
+            )
+
+        data = doc.to_dict() or {}
+
+        if data.get("user_id") != user_id:
+            raise HTTPException(
+                status_code=404,
+                detail="Histori tidak ditemukan."
+            )
+
+        doc_ref.delete()
+
+        return {
+            "message": "Histori berhasil dihapus.",
+            "analysis_id": analysis_id
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as error:
+        logger.error("Failed to delete history: %s", str(error))
+        raise HTTPException(
+            status_code=500,
+            detail="Gagal menghapus histori."
+        )
